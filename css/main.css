@@ -1,0 +1,249 @@
+header {
+	padding-top: 10px;
+  background: #26a69a;
+  border-bottom: 4px solid #eaeaea;
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 200;
+}
+.pane-title {
+	margin-bottom: 10px;
+}
+.page-header {
+	text-align: center;
+	font-size: 40px;
+	font-weight: 300;
+	color: #fff;
+	-webkit-font-smoothing: antialiased;
+}
+.page-container {
+	min-height: 100%;
+}
+.message-box {
+	text-align: center;
+	line-height: 2rem;
+  font-size: 1.75rem;
+  margin-bottom: 30px;
+}
+footer {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 1rem;
+  background-color: #efefef;
+  text-align: center;
+  z-index: 100;
+}
+.row {
+	margin-bottom: 10px;
+}
+.col {
+	float: left;
+	display: inline-block;
+	box-sizing: border-box;
+}
+.left-pane, .right-pane {
+	margin: 5%;
+	float: left;
+	width: 40%;
+	box-sizing: border-box;
+}
+.center-pane {
+	margin: 3% 6%;
+}
+.collection .collection-item.avatar {
+	min-height: 60px;
+}
+.dropzone-overlay {
+  top: 80px;
+  position: fixed;
+  left: 0px;
+  z-index: 999;
+  width: 100%;
+  height: calc(100% - 80px);
+  background: rgba(38, 166, 154, 0.2);
+  border: 3px dashed #26a69a;
+  visibility: visible;
+}
+.dropzone-overlay.hide-overlay {
+  visibility: hidden;
+}
+.float-upload-btn {
+  width: 60px;
+  height: 60px;
+  background: #26a69a;
+  border-radius: 35px;
+  color: white;
+  font-size: 42px;
+  padding-left: 18px;
+  padding-bottom: 50px;
+  float: right;
+  box-shadow: 12px 2px 15px 12px;
+  position: absolute;
+  right: 50px;
+  bottom: 50px;
+  box-shadow: 0px 1px 12px -1px rgb(0, 0, 0);
+}
+.float-upload-btn:hover {
+  cursor: pointer;
+  box-shadow: 0px 1px 12px 0px rgb(0, 0, 0);
+}
+.file-row {
+  display: flex;
+  padding: 10px;
+  border-bottom: 1px solid gray;
+}
+.title {
+  font-weight: bold;
+  color: darkslategray;
+}
+.file-name {
+  flex: 3;
+  text-align: left;
+  margin: auto;
+}
+.file-date, .file-actions, .file-size {
+  margin: auto;
+  flex: 1;
+}
+.file-actions {
+  text-align: right;
+}
+.file-actions .download-btn {
+  background: #26a69a;
+  color: white;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  margin-left: 10px;
+  display: inline-block;
+  box-shadow: 0px 1px 10px -1px rgba(0, 0, 0, 0.68);
+}
+.file-actions .delete-btn {
+  background: white;
+  color: #26a69a;
+  border: none;
+  padding: 8px;
+  display: inline-block;
+  margin-left: 10px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.file-list-section {
+  max-height: 500px;
+  overflow: auto;
+  padding: 10px;
+}
+.dropzone .dz-closelink {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  font-size: 18px;
+  cursor: pointer !important;
+  color: darkslategray;
+  text-decoration: underline;
+  font-weight: bold;
+}
+.spinner-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 500;
+}
+
+/* ------------- Overrides ------------- */
+
+.dropzone.dz-clickable {
+  background: transparent;
+  top: 80px;
+  position: fixed;
+  left: 0px;
+  z-index: 499;
+  width: 100%;
+  height: calc(100% - 80px);
+  background: rgba(38, 166, 154, 0.1);
+  border: 3px #26a69a dashed;
+  display: block;
+}
+.dropzone a {
+  color: #26a69a;
+}
+.dz-message {
+  color: white;
+  font-size: 72px;
+  width: 60%;
+  margin: 10% auto !important;
+}
+
+
+/* ------------ Spinner css ------------- */
+
+.loader {
+  font-size: 10px;
+  margin: 20% auto;
+  text-indent: -9999em;
+  width: 11em;
+  height: 11em;
+  border-radius: 50%;
+  background: #ffffff;
+  background: -moz-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -webkit-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -o-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: -ms-linear-gradient(left, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  background: linear-gradient(to right, #ffffff 10%, rgba(255, 255, 255, 0) 42%);
+  position: relative;
+  -webkit-animation: load3 1.4s infinite linear;
+  animation: load3 1.4s infinite linear;
+  -webkit-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  transform: translateZ(0);
+}
+.loader:before {
+  width: 50%;
+  height: 50%;
+  background: #ffffff;
+  border-radius: 100% 0 0 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  content: '';
+}
+.loader:after {
+  background: #0dc5c1;
+  width: 75%;
+  height: 75%;
+  border-radius: 50%;
+  content: '';
+  margin: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+@-webkit-keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load3 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

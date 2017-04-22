@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drive It</title>
+    <meta name="description" content="Drive In Cloud" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="materialize.min.css">
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="basic.min.css" type="text/css" />
+  </head>
+  <body>
+    <div id="overlaySpinner" class="spinner-overlay">
+      <div class="loader page-spinner">
+      </div>
+    </div>
+    <header id="header">
+      <div class="row">
+        <div class="logo-icon">
+        </div>
+        <div class="page-header">
+          Drive It
+        </div>
+      </div>
+    </header>
+    <main id="body">
+      <div class="row">
+        <div class="page-container">
+          <div id="centerPane" class="center-pane">
+            <div class="row center">
+              <div class="col s12">
+                <h5 class="light message-box">This Drive storage allows you to upload and store your files in the cloud. </h5>
+              </div>
+            </div>
+            <div class="row center">
+              <div class="files-container col s12">
+                <div id="fileListHeader" class="file-list-header">
+                  <div class="file-row title">
+                    <div class="file-name title"> File Name </div>
+                    <div class="file-date title"> Date Modified </div>
+                    <div class="file-size title"> File Size </div>
+                    <div class="file-actions title"></div>
+                  </div>
+                </div>
+                <div id="fileList" class="file-list-section">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="floatOver" class="dropzone-overlay hide-overlay">
+            <div class="row center">
+              <form class="dropzone" method="post" id="fileDropzone" action="/api/file-upload">
+                <div class="dz-message">
+                <a>Click</a> here or <a>Drop</a> files here to upload
+                </div>
+                <a id="dzCancel" class="dz-closelink"> Close [X] </a>
+              </form>
+            </div>
+          </div>
+          <div id="uploadBtn" class="float-upload-btn">+
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="dropzone.min.js"></script>
+    <script type="text/javascript" src="main.js"></script>
+  </body>
+</html>
