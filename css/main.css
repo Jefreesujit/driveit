@@ -61,15 +61,18 @@ footer {
   top: 80px;
   position: fixed;
   left: 0px;
-  z-index: 199;
+  z-index: 299;
   width: 100%;
   height: calc(100% - 80px);
   background: rgba(38, 166, 154, 0.2);
   border: 3px dashed #26a69a;
   visibility: visible;
+  opacity: 1;
+  transition: 0.3s;
 }
 .dropzone-overlay.hide-overlay {
   visibility: hidden;
+  opacity: 0;
 }
 .float-upload-btn {
   width: 60px;
@@ -159,7 +162,7 @@ footer {
   top: 80px;
   position: fixed;
   left: 0px;
-  z-index: 499;
+  z-index: 299;
   width: 100%;
   height: calc(100% - 80px);
   background: rgba(38, 166, 154, 0.1);
