@@ -38,15 +38,16 @@ function getFilesList () {
   });
 }
 
- $('#uploadBtn').on('click', function() {
-  $('#floatOver').removeClass('hide-overlay');
-  $('.dropzone.dz-started .dz-message').show();
- });
-
- $('#dzCancel').on('click', function() {
-  $('#floatOver').addClass('hide-overlay');
- });
-
+$('#uploadBtn').on('click', function() {
+  if ($('#uploadBtn').hasClass('active')) {
+    $('#floatOver').addClass('hide-overlay');
+    $('#uploadBtn').removeClass('active');
+  } else {
+    $('#floatOver').removeClass('hide-overlay');
+    $('#uploadBtn').addClass('active');
+    $('.dropzone.dz-started .dz-message').show();
+  }
+});
 
 $(document).ready(function() {
   $('#overlaySpinner').show();
