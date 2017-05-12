@@ -3,11 +3,13 @@ var app = express();
 var http = require('http').Server(app);
 var multiparty = require('connect-multiparty')();
 var controller = require('./s3service');
+var FB = 
 
 // serve index file
-app.get('/', function(req,res){
+app.get('/', function(req,res) {
 	res.sendFile(__dirname + '/index.html');
 });
+
 // serve static files
 app.use(express.static(__dirname + '/css'));
 app.use(express.static(__dirname + '/js'));
