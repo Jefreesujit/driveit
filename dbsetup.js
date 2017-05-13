@@ -36,7 +36,7 @@ dynamodb.describeTable({TableName: 'Users'}, function(err, data) {
       }
     });
   } else {
-    console.log("User table already exists", JSON.stringify(data, null, 2));
+    console.log(JSON.stringify(data.Table.TableName, null, 2) + " table already exists");
   }
 });
 
@@ -55,6 +55,7 @@ User [
         fileId: '',
         fileName: '',
         fileOperation: '',
+        status: (success)
         date: ''
       }
     ]

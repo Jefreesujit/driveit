@@ -28,8 +28,7 @@
         AWS.config.credentials = new AWS.WebIdentityCredentials({
           ProviderId: 'graph.facebook.com',
           RoleArn: roleArn,
-          WebIdentityToken: response.authResponse.accessToken,
-          IdentityPoolId: " us-west-2_YA4EOBm4d"
+          WebIdentityToken: response.authResponse.accessToken
         });
         fbUserId = response.authResponse.userID;
 
