@@ -19,13 +19,14 @@ var COGNITO_SYNC_TOKEN,
 // set the Amazon Cognito region
 AWS.config.region = 'us-west-2';
 // initialize the Credentials object with our parameters
-AWS.config.credentials = new AWS.CognitoIdentityCredentials(params);
+// AWS.config.credentials = new AWS.CognitoIdentityCredentials(params);
 var cognitoSyncClient = new AWS.CognitoSync();
 // We can set the get method of the Credentials object to retrieve
 // the unique identifier for the end user (identityId) once the provider
 // has refreshed itself
 
 function getCognitoId () {
+  // AWS.config.credentials is instantiated on userSignIn function itself
   AWS.config.credentials.get(function(err) {
     if (err) {
       console.log("Error: "+err);

@@ -5,23 +5,35 @@ var multiparty = require('connect-multiparty')();
 var controller = require('./s3service');
 var getCognitoId = require('./auth.js');
 require('./dbsetup.js');
+var cognito = require('./aws_cognito.js');
 
 // check for session
-var userLoggedIn = true;
+var retreiveUserStatus = function (req,res) {
+  var userLoggedIn = cognito.retrieveUserFromLocalStorage();
+  userLoggedIn.then(function(successData) {
+    getCognitoId();
+    res.sendFile(__dirname + '/index.html');
+  }, function() {
+    res.redirect('/login');
+  });
+};
 
+var userSignIn =  function () {
+  var signIn = cognito.signInUser('admin', 'P@ssW0rd');
+  signIn.then(function(data) {
+    console.log('===post login data===', data);
+    res.redirect('/');
+  });
+}
 
 // serve index file
 app.get('/', function(req,res) {
-  if (userLoggedIn) {
-    getCognitoId();
-    res.sendFile(__dirname + '/index.html');
-  } else {
-    res.redirect('/login');
-  }
+  retreiveUserStatus(req,res);
 });
 
 app.get('/login', function(req,res) {
-    res.sendFile(__dirname + '/login.html');
+  res.sendFile(__dirname + '/login.html');
+  userSignIn();
 });
 
 // serve static files
