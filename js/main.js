@@ -6,7 +6,7 @@ function refreshList () {
 
 function deleteFile (fileKey) {
   $('#overlaySpinner').show();
-  $.post( "api/delete-file/"+fileKey, function() {
+  $.post("api/delete-file/"+fileKey, function() {
     refreshList();
   })
   .fail(function(err) {
