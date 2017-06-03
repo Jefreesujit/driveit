@@ -11,16 +11,32 @@ exports.retreiveUserStatus = function (req,res) {
   });
 };
 
-exports.userSignIn =  function () {
+exports.userSignIn =  function (req, res) {
   var signIn = cognito.signInUser('admin', 'P@ssW0rd');
   signIn.then(function(data) {
     console.log('===post login data===', data);
+    // handle the response
   });
 }
 
-exports.userSignUp = function () {
+exports.userSignUp = function (req, res) {
   var signUp = cognito.signUpUser('jefree.sujit@gmail.com', 'admin', 'male', 'P@ssW0rd');
   signUp.then(function(data) {
     console.log('===post signup data===', data);
+    // handle the response
   });
+}
+
+exports.verifySignUp = function () {
+  // var signUp = cognito.signUpUser('jefree.sujit@gmail.com', 'admin', 'male', 'P@ssW0rd');
+  // signUp.then(function(data) {
+  //   console.log('===post signup data===', data);
+  // });
+}
+
+exports.forgotPassword = function () {
+  // var signUp = cognito.signUpUser('jefree.sujit@gmail.com', 'admin', 'male', 'P@ssW0rd');
+  // signUp.then(function(data) {
+  //   console.log('===post signup data===', data);
+  // });
 }

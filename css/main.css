@@ -245,3 +245,55 @@ footer {
     transform: rotate(360deg);
   }
 }
+
+
+
+
+/* login.css */
+
+.login-form .hide {
+  display: none
+}
+
+.register-form .hide {
+  display: none
+}
+
+button.btn.waves-effect.waves-light {
+  margin: 20px;
+  display: block;
+}
+
+h5
+{
+  font-weight: 400;
+}
+
+.container {
+  margin-top: 40px;
+  width: 400px;
+}
+
+.tabs {
+  cursor: pointer;
+  user-select: none;
+}
+
+.tabs .indicator {
+  background-color: #e0f2f1;
+  height: 60px;
+  opacity: 0.3;
+  right: 200px;
+  left: 0px;
+  transition: 0.3s;
+}
+
+.tabs .indicator.slide {
+  transition: 0.3s;
+  left: 200px;
+  right: 0px;
+}
+
+.form-container {
+  padding-top: 20px;
+}

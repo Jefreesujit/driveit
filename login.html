@@ -1,11 +1,97 @@
 <!DOCTYPE html>
-<html>
-<head>
-	<title>Login</title>
-</head>
-<body>
-<input type="text"/>
-<input type="password" />
-<script type="text/javascript" src="auth.js"></script>
-</body>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drive It</title>
+    <meta name="description" content="Drive In Cloud" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="materialize.min.css">
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="basic.min.css" type="text/css" />
+  </head>
+  <body>
+    <div id="overlaySpinner" class="spinner-overlay">
+      <div class="loader page-spinner">
+      </div>
+    </div>
+    <header id="header">
+      <div class="row">
+        <div class="logo-icon">
+        </div>
+        <div class="page-header">
+          Drive It
+        </div>
+      </div>
+    </header>
+    <main id="body">
+      <div class="row">
+        <div class="page-container">
+          <div id="centerPane" class="center-pane">
+            <div class="row center">
+              <div class="col s12">
+                <h5 class="light message-box">Drive It allows you to  store, retrieve and manage your files in cloud. </h5>
+              </div>
+            </div>
+            <div class="row">
+              <div class="container white z-depth-2">
+                <ul class="tabs teal">
+                  <li id="login-tab" class="tab col s3"><a class="white-text active">login</a></li>
+                  <li id="register-tab" class="tab col s3"><a class="white-text">register</a></li>
+                  <div id="tab-indicator" class="indicator"></div>
+                </ul>
+                <div id="login" class="col s12 login-form">
+                  <form class="col s12">
+                    <div class="form-container">
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <input id="email" type="email" placeholder="Email" class="validate">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <input id="password" type="password" placeholder="Email" class="validate">
+                        </div>
+                      </div>
+                      <center>
+                        <button class="btn waves-effect waves-light teal" type="submit" name="action">Login</button>
+                        <a id="forgot-password">Forgotten password?</a>
+                      </center>
+                    </div>
+                  </form>
+                </div>
+                <div id="register" class="col s12 register-form hide">
+                  <form class="col s12">
+                    <div class="form-container">
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <input id="last_name" placeholder="Username" type="text" class="validate">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <input id="email" type="email" placeholder="Email" class="validate">
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="input-field col s12">
+                          <input id="password" type="password" placeholder="Password" class="validate">
+                        </div>
+                      </div>
+                      <center>
+                        <button class="btn waves-effect waves-light teal" type="submit" name="action">Create</button>
+                        <a id="verify-code-input">Have a verification code?</a>
+                      </center>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="auth.js"></script>
+  </body>
 </html>

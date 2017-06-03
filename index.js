@@ -17,10 +17,12 @@ app.get('/fonts/roboto/*', function(req ,res){
 // attach middlewares
 app.use(multiparty);
 
+// attaching directory path to request
 app.use(function(req, res, next) {
   req.buildDir = __dirname;
   next();
 });
+
 // attaching routes
 attachRoutes(app);
 
