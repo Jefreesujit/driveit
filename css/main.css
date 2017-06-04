@@ -251,12 +251,16 @@ footer {
 
 /* login.css */
 
-.login-form .hide {
-  display: none
+a {
+  cursor: pointer;
 }
 
-.register-form .hide {
-  display: none
+.hide {
+  display: none;
+}
+
+.form-text {
+  color: #26a69a;
 }
 
 button.btn.waves-effect.waves-light {

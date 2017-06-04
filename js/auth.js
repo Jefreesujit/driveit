@@ -81,10 +81,32 @@ function forgotPassword () {
   });
 }
 
+// attaching events
+
 $('#login-tab').on('click', function() {
   $('#tab-indicator').removeClass('slide');
   $('#register').addClass('hide');
   $('#login').removeClass('hide');
+});
+
+$('#forgot-password').on('click', function() {
+  $('#login-section').addClass('hide');
+  $('#password-reset').removeClass('hide');
+});
+
+$('#login-back').on('click', function() {
+  $('#password-reset').addClass('hide');
+  $('#login-section').removeClass('hide');
+});
+
+$('#verify-code-input').on('click', function() {
+  $('#register-section').addClass('hide');
+  $('#verify-section').removeClass('hide');
+});
+
+$('#register-back').on('click', function() {
+  $('#verify-section').addClass('hide');
+  $('#register-section').removeClass('hide');
 });
 
 $('#register-tab').on('click', function() {
@@ -115,6 +137,4 @@ $('#register-tab').on('click', function() {
 
 $(document).ready(function() {
   $('#overlaySpinner').hide();
-
-  $()
 });

@@ -57,7 +57,7 @@ exports.signUpUser = function (email, name, gender, password){
 		}
 		var dataGender = {
 		    Name : 'gender',
-		    Value : gender
+		    Value : 'male'
 		}
 		// take each attribute object and turn it into a CognitoUserAttribute object
 		var attributeEmail = new CognitoUserAttribute(dataEmail)
