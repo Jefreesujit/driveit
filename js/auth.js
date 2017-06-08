@@ -1,64 +1,55 @@
 
-function userSignIn () {
-  var userName = $('#userName').val(),
-      password = $('#password').val();
-
+function userSignIn (data) {
+  console.log(data);
   $.ajax({
     url:'/api/user-sign-in',
     method: 'post',
-    data: {
-      userName: 'admin',
-      password: 'P@ssW0rd'
-    },
+    data: data,
     success: function(response) {
-      console.log(response.data);
+      console.log(response);
+      window.location = response.redirectUrl;
     },
     error: function (err) {
       console.log(err);
+      $('#overlaySpinner').hide();
     }
   });
 }
 
-function userSignUp () {
-  var userName = $('#userName').val(),
-      password = $('#password').val(),
-      emailId = $('#emailId').val(),
-      gender = $('#gender').val();
-
+function userSignUp (data) {
   $.ajax({
     url:'/api/user-sign-up',
     method: 'post',
-    data: {
-      emailId: 'jefree.sujit@gmail.com',
-      userName: 'admin',
-      password: 'P@ssW0rd',
-      gender: 'male'
-    },
+    data: data,
     success: function(response) {
-      console.log(response.data);
+      console.log(response);
+      $('#register-section').addClass('hide');
+      $('#verify-section').removeClass('hide');
+      $('#verify-email').val(response.email);
+      $('#verify-email').prop("readonly", true);
+      $('#overlaySpinner').hide();
     },
     error: function (err) {
       console.log(err);
+      $('#overlaySpinner').hide();
     }
   });
 }
 
-function signUpVerify () {
-  var emailId = $('#emailId').val(),
-      verificationPin = $('#verificationPin').val();
-
+function signUpVerify (data) {
   $.ajax({
     url:'/api/verify-sign-up',
     method: 'post',
-    data: {
-      emailId: '',
-      verificationPin: ''
-    },
+    data: data,
     success: function(response) {
-      console.log(response.data);
+      console.log(response);
+      $('#register').addClass('hide');
+      $('#login').removeClass('hide');
+      $('#overlaySpinner').hide();
     },
     error: function (err) {
       console.log(err);
+      $('#overlaySpinner').hide();
     }
   });
 }
@@ -113,6 +104,41 @@ $('#register-tab').on('click', function() {
   $('#tab-indicator').addClass('slide');
   $('#login').addClass('hide');
   $('#register').removeClass('hide');
+});
+
+$('#login-form').on('submit', function() {
+  var email = $('#log-email').val(),
+      password = $('#log-password').val();
+  $('#overlaySpinner').show();
+  console.log({email, password});
+  userSignIn({email, password});
+  return false;
+});
+
+$('#register-form').on('submit', function() {
+  var email = $('#reg-email').val(),
+      password = $('#reg-password').val(),
+      username = $('#reg-username').val();
+  $('#overlaySpinner').show();
+  userSignUp({email, username, password});
+  console.log({email, username, password});
+  return false;
+});
+
+$('#pr-form').on('submit', function() {
+  var email = $('#pr-email').val();
+  // $('#overlaySpinner').show();
+  console.log({email});
+  return false;
+});
+
+$('#verify-form').on('submit', function() {
+  var email = $('#verify-email').val(),
+      pin = $('#verify-code').val();
+  $('#overlaySpinner').show();
+  signUpVerify({email, pin});
+  console.log({email, pin});
+  return false;
 });
 
 // function makeRequest(url, data, callBack) {

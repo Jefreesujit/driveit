@@ -42,7 +42,7 @@
                 </ul>
                 <div id="login" class="col s12 login-form">
                   <div class="login-section" id="login-section">
-                    <form class="col s12">
+                    <form id="login-form" class="col s12">
                       <div class="form-container">
                         <div class="row">
                           <div class="input-field col s12">
@@ -51,18 +51,18 @@
                         </div>
                         <div class="row">
                           <div class="input-field col s12">
-                            <input id="password" type="password" placeholder="Password" class="validate">
+                            <input id="log-password" type="password" placeholder="Password" class="validate">
                           </div>
                         </div>
                         <center>
                           <button class="btn waves-effect waves-light teal" type="submit" name="action">Login</button>
-                          <a id="forgot-password">Forgotten password?</a>
+                          <a id="forgot-password">Forgot password?</a>
                         </center>
                       </div>
                     </form>
                   </div>
                   <div class="password-reset hide" id="password-reset">
-                    <form class="col s12">
+                    <form id="pr-form" class="col s12" >
                       <div class="form-container">
                         <center class="row form-text">
                         Please enter the email address associated with your account
@@ -82,21 +82,21 @@
                 </div>
                 <div id="register" class="col s12 register-form hide">
                   <div class="register-section" id="register-section">
-                    <form class="col s12">
+                    <form id="register-form" class="col s12">
                       <div class="form-container">
                         <div class="row">
                           <div class="input-field col s12">
-                            <input id="last_name" placeholder="Username" type="text" class="validate">
+                            <input id="reg-username" placeholder="Username" type="text" class="validate">
                           </div>
                         </div>
                         <div class="row">
                           <div class="input-field col s12">
-                            <input id="email" type="email" placeholder="Email" class="validate">
+                            <input id="reg-email" type="email" placeholder="Email" class="validate">
                           </div>
                         </div>
                         <div class="row">
                           <div class="input-field col s12">
-                            <input id="password" type="password" placeholder="Password" class="validate">
+                            <input id="reg-password" type="password" placeholder="Password" class="validate">
                           </div>
                         </div>
                         <center>
@@ -107,11 +107,11 @@
                     </form>
                   </div>
                   <div class="verify-section hide" id="verify-section">
-                    <form class="col s12">
+                    <form id="verify-form" class="col s12">
                       <div class="form-container">
                         <div class="row">
                           <div class="input-field col s12">
-                            <input id="email" type="email" placeholder="Email" class="validate">
+                            <input id="verify-email" type="email" placeholder="Email" class="validate">
                           </div>
                         </div>
                         <div class="row">
@@ -137,13 +137,3 @@
     <script type="text/javascript" src="auth.js"></script>
   </body>
 </html>
-
-<!-- <p> 
-  <input name="group1" type="radio" id="test1" /> 
-      <label for="test1">Red</label>
-    </p>
-    <p>
-      <input name="group1" type="radio" id="test2" />
-      <label for="test2">Yellow</label>
-    </p>
- -->

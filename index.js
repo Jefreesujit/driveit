@@ -1,6 +1,7 @@
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
+var bodyParser = require('body-parser');
 var multiparty = require('connect-multiparty')();
 var attachRoutes = require('./routes');
 require('./dbsetup.js');
@@ -12,6 +13,24 @@ app.use(express.static(__dirname + '/js'));
 app.get('/fonts/roboto/*', function(req ,res){
   var fileName = req.url.substring(req.url.indexOf('Roboto'));
   res.sendFile(__dirname + '/fonts/roboto/' + fileName);
+});
+
+
+app.use(function (req, res, next) {
+  bodyParser.raw({
+    limit: '50mb'
+  })(req, res, next);
+});
+
+app.use(function (req, res, next) {
+  bodyParser.json()(req, res, next);
+});
+
+app.use(function (req, res, next) {
+  bodyParser.urlencoded({
+    extended: true,
+    limit: '50mb'
+  })(req, res, next);
 });
 
 // attach middlewares
