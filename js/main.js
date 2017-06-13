@@ -16,25 +16,34 @@ function deleteFile (fileKey) {
 }
 
 function getFilesList () {
-  $.get('/api/get-files-list', function(response) {
-    response.Contents.map(function(file, index) {
-      $('#fileList').append(
-        '<div class="file-row" id="fileId_'+index+'">'+
-          '<div class="file-name">'+file.Key+'</div>'+
-          '<div class="file-date">'+file.LastModified+'</div>'+
-          '<div class="file-size">'+file.Size+' Bytes </div>'+
-          '<div class="file-actions">'+
-            '<a class="download-btn" id="download-btn" href="/api/get-file/'+file.Key+'">Download</button>'+
-            '<a class="delete-btn" id="delete-file-btn" onClick="deleteFile(\'' + file.Key + '\')">Delete</button>'+
-          '</div>'+
-        '</div>'
-      );
-    });
-    $('#overlaySpinner').hide();
-  })
-  .fail(function(err) {
-    console.log('file fetch error', err);
-    $('#overlaySpinner').hide();
+  var authHeader = 'Bearer ' + sessionStorage.getItem("accessToken");
+  $.ajax({
+    url:'/api/get-files-list',
+    method: 'get',
+    headers: {
+      Authorization: authHeader
+    },
+    success: function(response) {
+      console.log(response);
+      response.Contents.map(function(file, index) {
+        $('#fileList').append(
+          '<div class="file-row" id="fileId_'+index+'">'+
+            '<div class="file-name">'+file.Key+'</div>'+
+            '<div class="file-date">'+file.LastModified+'</div>'+
+            '<div class="file-size">'+file.Size+' Bytes </div>'+
+            '<div class="file-actions">'+
+              '<a class="download-btn" id="download-btn" href="/api/get-file/'+file.Key+'?Authorization='+authHeader+'">Download</button>'+
+              '<a class="delete-btn" id="delete-file-btn" onClick="deleteFile(\'' + file.Key + '\')">Delete</button>'+
+            '</div>'+
+          '</div>'
+        );
+      });
+      $('#overlaySpinner').hide();
+    },
+    error: function(err) {
+      console.log('file fetch error', err);
+      $('#overlaySpinner').hide();
+    }
   });
 }
 
@@ -53,6 +62,9 @@ $(document).ready(function() {
   $('#overlaySpinner').show();
   getFilesList();
   Dropzone.options.fileDropzone = {
+    headers: {
+      Authorization: 'Bearer ' + sessionStorage.getItem("accessToken")
+    },
     paramName: "file", // The name that will be used to transfer the file
     maxFilesize: 25, // MB
     complete: function(file, done) {

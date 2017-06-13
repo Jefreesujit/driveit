@@ -6,7 +6,9 @@ function userSignIn (data) {
     method: 'post',
     data: data,
     success: function(response) {
-      console.log(response);
+      console.log(response.sessionToken);
+      debugger;
+      sessionStorage.setItem('accessToken', response.sessionToken);
       window.location = response.redirectUrl;
     },
     error: function (err) {
