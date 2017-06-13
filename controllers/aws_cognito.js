@@ -7,6 +7,8 @@ var Cog = require('amazon-cognito-identity-js');
 var AWS = require('aws-sdk');
 require('amazon-cognito-js');
 require('colors');
+var jwkToPem = require('jwk-to-pem');
+
 //import { userPool, USERPOOL_ID, IDENTITY_POOL_ID } from './aws_profile'
 // var uuid = require('node-uuid');
 
@@ -30,6 +32,29 @@ var IDENTITY_POOL_ID = 'us-west-2:84112f2b-037f-457e-9cb8-2227f7b6b44b';
 
 
 var userPool = new CognitoUserPool(userData);
+
+// get the jwt token set for userpool id, to validate against the api calls
+var jwtTokenSet = {"keys":[
+	{"alg":"RS256","e":"AQAB","kid":"TiGFVEk127LB0De5GxZ2PHul8EprtWLwJERnw52k97k=","kty":"RSA","n":"gEtZ6rjjDUEJfu3b7USScTBpuyEC2-PVS5H4Hi2Gowz_SGHE1CJc0D1qcMkqzx9GsAlDkSrvDk6YPkLaufRzkXG2wQx_ZS6_E2FDxftYbm2CQc4Ct9obSqDViIG9a95oAEN8Fs1ft4l7QyqEmxces8hcgNjCXCQc1eiGjo_iwZdh0lj-WA49vPxvmQ-2JOfmeSgb7puRa3oSOSj9brd5ic9CcJc8R7skSLMwdq8Tw9kkD2KolJvFa2x91E-kYzzCKGW47geUsLVLlQEEB-Z1IwpZWz6U_0hL29FuOi5oAP0CDaoJmFOllHIrYqrY5DKNOEmX6Y4yakCpCOmdBIaTZw","use":"sig"},
+	{"alg":"RS256","e":"AQAB","kid":"vxMqpjNLIYNUKiPDnLOlzWmxDKVpN0hNm5MCqJV5bC4=","kty":"RSA","n":"3SRmAmPIA9i-79kV_sglG_APsT_MioLRNikIxJQavYqaSbvywnB5G5bJyzIi8a0G2m-D3cGMPzOn-NinviWrI3PRIzD7WH3lp8VC5xQEztJKC4i0QjwiCpLOgIXFBl_qAHVsIrDmm1o1RmV8iNvWN5mYLODCONaGtBwqQUsScCoTkqE-Gtri7Fv3mvVknCGsMSckKY9TIoFRBW7UK8qDIOckR4yH291gGu8ADLSetGHpgqjnZWb1WOFVnzod5oaOgCtnTtd83h9ywHqi3DjJ2adyp17Ij3GyHNP3MfvRKtc4kdkEscK90rzXbLcTBAd9qM-oF-J16bud0RTMdOLz-w","use":"sig"}
+]};
+
+// iterate and create pem keys for each JWT key token set
+var pems = {},
+	keys = jwtTokenSet.keys;
+
+for(var i = 0; i < keys.length; i++) {
+    //Convert each key to PEM
+    var key_id = keys[i].kid;
+    var modulus = keys[i].n;
+    var exponent = keys[i].e;
+    var key_type = keys[i].kty;
+    var jwk = { kty: key_type, n: modulus, e: exponent};
+    var pem = jwkToPem(jwk);
+    pems[key_id] = pem;
+}
+
+// console.log(pems);
 
 // // we create an array of all attributes, without the `custom:` prefix.
 // // This will be used for building the React-Redux object in plain JS, hence no AWS Cognito related name requirements
@@ -125,7 +150,7 @@ function authenticateUser(cognitoUser, authenticationDetails){
 	            console.log("======== VIEW THE REFRESH TOKEN =========")
 	            // console.log(localStorage.getItem('user_token'))
 	            console.log("======== VIEW THE AUTHENICATION RESULT =========")
-	            //console.log(result);
+	            // console.log(result);
 
 							// To
 			    		// Edge case, AWS Cognito does not allow for the Logins attr to be dynamically generated. So we must create the loginsObj beforehand
@@ -137,19 +162,22 @@ function authenticateUser(cognitoUser, authenticationDetails){
 							// in order to use other AWS services (such as S3), we need the correct AWS credentials
 							// we set these credentials by passing in a `CognitoIdentityCredentials` object that has our identity pool id and logins object
 							// we are logging into an AWS federated identify pool
-							AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+				AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 	                IdentityPoolId : IDENTITY_POOL_ID, // your identity pool id here
 	                Logins : loginsObj
 	            })
-							// then we refresh our credentials to use the latest one that we set
+					// then we refresh our credentials to use the latest one that we set
 	            AWS.config.credentials.refresh(function(){
 	            	// console.log(AWS.config.credentials)
 	            })
-							// resolve the promise to move on to next step after authentication
+				// resolve the promise to move on to next step after authentication
 	            res({
 	            	success: true,
-	            	sessionToken: result.accessToken.jwtToken
+	            	idToken: result.idToken.jwtToken,
+	            	sessionToken: result.accessToken.jwtToken,
+	            	refreshToken: result.refreshToken.token
 	            });
+	            console.log('post res')
 	        },
 					// if there was a failure, we reject the promise
 	        onFailure: function(err) {
@@ -421,7 +449,7 @@ exports.retrieveUserFromLocalStorage = function () {
 	            }
 							// create a new `CognitoIdentityCredentials` object to set our credentials
 							// we are logging into a AWS federated identity pool
-			    		AWS.config.credentials = new AWS.CognitoIdentityCredentials({
+			    AWS.config.credentials = new AWS.CognitoIdentityCredentials({
 	                IdentityPoolId : IDENTITY_POOL_ID, // your identity pool id here
 	                Logins : loginsObj
 	            })
@@ -429,7 +457,11 @@ exports.retrieveUserFromLocalStorage = function () {
 	            AWS.config.credentials.refresh(function(){
 	            	//console.log(AWS.config.credentials)
 								// resolve the promise by again building the user object to be used in our React-Redux app
-	            	res('buildUserObject(cognitoUser)')
+	            	res({
+		            	idToken: session.idToken.jwtToken,
+		            	sessionToken: session.accessToken.jwtToken,
+		            	refreshToken: session.refreshToken.token
+	            	})
 	            })
 	        });
 	    }else{

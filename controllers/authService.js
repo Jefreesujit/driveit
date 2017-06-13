@@ -1,6 +1,6 @@
 var cognito = require('./aws_cognito.js');
 
-function checkUserSession (success, errorCallback) {
+var checkUserSession  = function(success, errorCallback) {
   var userLoggedIn = cognito.retrieveUserFromLocalStorage();
   userLoggedIn.then(success, errorCallback);
 }
@@ -24,14 +24,15 @@ exports.loginController = function (req,res) {
 }
 
 exports.userSignIn =  function (req, res) {
-  console.log(req.body.email, req.body.password);
   var signIn = cognito.signInUser(req.body.email, req.body.password);
   signIn.then(function(data) {
+    req.user = req.user || {};
+    req.user.tokens = data;
     console.log('===post login data===', data);
-      data.redirectUrl = '/';
-      res.status(200).json(data);
+    data.redirectUrl = '/';
+    res.status(200).json(data);
   }, function(err) {
-      res.status(500).json(err);
+    res.status(500).json(err);
   });
 }
 
@@ -39,9 +40,9 @@ exports.userSignUp = function (req, res) {
   var signUp = cognito.signUpUser(req.body.email, req.body.username, req.body.password);
   signUp.then(function(data) {
     console.log('===post signup data===', data);
-      res.status(200).json(data);
+    res.status(200).json(data);
   }, function(err) {
-      res.status(500).json(err);
+    res.status(500).json(err);
   });
 }
 
@@ -61,3 +62,5 @@ exports.forgotPassword = function () {
   //   console.log('===post signup data===', data);
   // });
 }
+
+exports.checkUserSession = checkUserSession;
