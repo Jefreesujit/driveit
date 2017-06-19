@@ -6,12 +6,19 @@ function refreshList () {
 
 function deleteFile (fileKey) {
   $('#overlaySpinner').show();
-  $.post("api/delete-file/"+fileKey, function() {
-    refreshList();
-  })
-  .fail(function(err) {
-    console.log('file delete error', err);
-    $('#overlaySpinner').hide();
+  $.ajax({
+    url:'api/delete-file/'+fileKey,
+    method: 'post',
+    headers: {
+      Authorization: 'Bearer ' + sessionStorage.getItem("accessToken")
+    },
+    success: function(response) {
+      refreshList();
+    },
+    error: function(err) {
+      console.log('file delete error', err);
+      $('#overlaySpinner').hide();
+    }
   });
 }
 
@@ -25,6 +32,9 @@ function getFilesList () {
     },
     success: function(response) {
       console.log(response);
+      if (response.sessionToken) {
+        sessionStorage.setItem('accessToken', response.sessionToken);
+      }
       response.Contents.map(function(file, index) {
         $('#fileList').append(
           '<div class="file-row" id="fileId_'+index+'">'+
@@ -58,6 +68,24 @@ $('#uploadBtn').on('click', function() {
   }
 });
 
+var dragTimer;
+$(document).on('dragover', function(e) {
+  var dt = e.originalEvent.dataTransfer;
+  if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+    $('#floatOver').removeClass('hide-overlay');
+    window.clearTimeout(dragTimer);
+  }
+});
+
+$(document).on('dragleave', function(e) {
+  if (e.originalEvent.pageX != 0 || e.originalEvent.pageY != 0) {
+        return false;
+  }
+  dragTimer = window.setTimeout(function() {
+    $('#floatOver').addClass('hide-overlay');
+  }, 25);
+});
+
 $(document).ready(function() {
   $('#overlaySpinner').show();
   getFilesList();
@@ -69,14 +97,15 @@ $(document).ready(function() {
     maxFilesize: 25, // MB
     complete: function(file, done) {
       $('.dz-messge').show();
-      $('.dz-preview.dz-file-preview').html('');
+      $('.dz-preview').hide('');
       $('#floatOver').addClass('hide-overlay');
       refreshList();
     },
     error: function(file, done) {
-      $('.dz-preview.dz-file-preview').html('');
+      $('.dz-preview').hide('');
       $('#floatOver').addClass('hide-overlay');      
     }
   };
 });
+
 

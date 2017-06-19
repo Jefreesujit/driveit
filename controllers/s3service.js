@@ -1,7 +1,7 @@
 var AWS = require('aws-sdk');
 var fs = require('fs');
 
-var bucketName = 'jefreesujit.com';
+var bucketName = 'driveit.com';
 var s3 = new AWS.S3({
   accessKeyId: 'AKIAJOL562VDTNEAJ4UQ',
   secretAccessKey: 'SJsMR2zxV18Y5I0Ot+P7x1PWYGJnm1obtc9On7jX',
@@ -11,10 +11,31 @@ var s3 = new AWS.S3({
   }
 });
 
+function getFolderName (req) {
+  return req.user.data.username.replace('@','-') + '/';
+}
+
+function formatData (req, data) {
+  var formattedData = {
+    Contents: data.Contents.map(function(content) {
+      return {
+        Size: content.Size,
+        LastModified: content.LastModified,
+        Key: content.Key.substring(getFolderName(req).length)
+      }
+    }),
+    accessToken: (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined
+  }
+
+  return formattedData;
+}
+
 exports.upload = function (req, res) {
   var file = req.files.file;
   fs.readFile(file.path, function (err, data) {
-    var params = { Key: file.originalFilename, Body: data} ;
+    var filePath = getFolderName(req) + file.originalFilename;
+    console.log(filePath);
+    var params = { Key: filePath, Body: data} ;
     s3.upload(params, function(err, putData) {
       fs.unlink(file.path);  // delete the temp file
       if (err) {
@@ -28,20 +49,22 @@ exports.upload = function (req, res) {
 };
 
 exports.listFiles = function (req, res) {
-  s3.listObjects({}, function(err, data) {
+  s3.listObjects({
+    Prefix: getFolderName(req)
+  }, function(err, data) {
     if (err) {
-      res.status(500).send(err); // err on file upload
+      res.status(500).send(err); // err on file listing
     } else {
-      res.status(200).send(data);
+      res.status(200).send(formatData(req, data));
     }
   });
 };
 
 exports.getFile = function (req, res) {
-  var params = {Key: req.params.fileKey};
+  var params = {Key: getFolderName(req) + req.params.fileKey};
   s3.getObject(params, function(err, data) {
     if (err) {
-      res.status(500).send(err); // err on file upload
+      res.status(500).send(err); // err on file download
     } else {
       res.setHeader('Content-disposition', 'attachment; filename='+req.params.fileKey);
       res.send(new Buffer(data.Body)); // data.body => buffer stream
@@ -50,10 +73,10 @@ exports.getFile = function (req, res) {
 };
 
 exports.deleteFile = function (req, res) {
-  var params = {Key: req.params.fileKey};
+  var params = {Key: getFolderName(req) + req.params.fileKey};
   s3.deleteObject(params, function(err, data) {
     if (err) {
-      res.status(500).send(err); // err on file upload
+      res.status(500).send(err); // err on file deletion
     } else {
       res.status(200).send(data);
     }

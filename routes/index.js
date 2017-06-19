@@ -1,15 +1,13 @@
 var s3Ctrl = require('../controllers/s3service');
 var authCtrl = require('../controllers/authService');
-var expressjwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
 // var router = require('express').Router();
 
 function getAuthToken(req) {
   if (req.headers.authorization) {
     return req.headers.authorization.split(' ')[1];
-  } else if (req.query) {
-    console.log(req.query);
-    return req.query.Authorization.split(' ')[1];;
+  } else if (req.query && req.query.Authorization) {
+    return req.query.Authorization.split(' ')[1];
   }
 }
 
@@ -19,6 +17,7 @@ var jwtValidator = function (req, res, next) {
   if (!authToken) {
     console.log('Access token not found');
     res.status(401).send('UnAuthorized: Invalid access token');
+    return;
   }
 
   // pems genenrated from jwt token set based on userpool id and region
@@ -28,7 +27,7 @@ var jwtValidator = function (req, res, next) {
   };
 
   var decodedJwt = jwt.decode(authToken, {complete: true});
-  var kid = decodedJwt.header.kid;
+  var kid = decodedJwt ? decodedJwt.header.kid : null;
   var pem = pems[kid];
 
   if (!pem) {
@@ -36,12 +35,22 @@ var jwtValidator = function (req, res, next) {
     res.status(401).send('UnAuthorized: Invalid access token');
   }
 
+  // in future, use socket.io to push the sessionToken, once expired
   jwt.verify(authToken, pem, { issuer: decodedJwt.payload.iss }, function(err, payload) {
-    if(err) {
-      // authCtrl.checkUserSession
+    req.user = req.user || {};
+    if(err && err.name === 'TokenExpiredError') {
+      authCtrl.checkUserSession(function(data) {
+        req.user.tokens = data;
+        next();
+      }, function(err) {
+        console.log(err);
+        res.status(401).send('UnAuthorized: Invalid access token');
+      });
+    } else if (err) {
       console.log(err);
-      res.status(401).send('UnAuthorized: Invalid access token');
+      res.status(401).send('UnAuthorized: Invalid access token');      
     } else {
+      req.user.data = payload;
       next();
     }
   });

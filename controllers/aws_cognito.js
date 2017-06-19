@@ -168,7 +168,7 @@ function authenticateUser(cognitoUser, authenticationDetails){
 	            })
 					// then we refresh our credentials to use the latest one that we set
 	            AWS.config.credentials.refresh(function(){
-	            	// console.log(AWS.config.credentials)
+	            	//console.log(AWS.config.credentials)
 	            })
 				// resolve the promise to move on to next step after authentication
 	            res({
@@ -177,7 +177,6 @@ function authenticateUser(cognitoUser, authenticationDetails){
 	            	sessionToken: result.accessToken.jwtToken,
 	            	refreshToken: result.refreshToken.token
 	            });
-	            console.log('post res')
 	        },
 					// if there was a failure, we reject the promise
 	        onFailure: function(err) {
@@ -199,7 +198,7 @@ function authenticateUser(cognitoUser, authenticationDetails){
 	            var newPassword = 'P@ssW0rd',
 	            	attributesData = {
 	            		gender: 'male',
-  						name: 'Admin',
+  						name: 'Auto Generated Name',
 	            	};
 	            // Get these details and call 
 	            // newPassword: password that user has given

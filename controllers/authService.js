@@ -8,7 +8,7 @@ var checkUserSession  = function(success, errorCallback) {
 exports.homeController = function (req,res) {
   checkUserSession(function (successData) {
     console.log('userLoggedIn');
-    cognito.getCognitoId();
+    // cognito.getCognitoId(); commented out temporarily
     res.sendFile(req.buildDir +'/index.html');
   }, function() {
     res.redirect('/login');
@@ -26,9 +26,7 @@ exports.loginController = function (req,res) {
 exports.userSignIn =  function (req, res) {
   var signIn = cognito.signInUser(req.body.email, req.body.password);
   signIn.then(function(data) {
-    req.user = req.user || {};
-    req.user.tokens = data;
-    console.log('===post login data===', data);
+    console.log('===post login ===');
     data.redirectUrl = '/';
     res.status(200).json(data);
   }, function(err) {

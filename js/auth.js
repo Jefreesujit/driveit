@@ -1,13 +1,11 @@
 
 function userSignIn (data) {
-  console.log(data);
   $.ajax({
     url:'/api/user-sign-in',
     method: 'post',
     data: data,
     success: function(response) {
       console.log(response.sessionToken);
-      debugger;
       sessionStorage.setItem('accessToken', response.sessionToken);
       window.location = response.redirectUrl;
     },
