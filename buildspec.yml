@@ -7,6 +7,7 @@ phases:
 
 artifacts:
   files:
+    - .well-known/**/*
     - server.js
     - package.json
     - dbsetup.js
