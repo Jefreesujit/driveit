@@ -20,6 +20,10 @@ app.get('/fonts/roboto/*', function(req ,res){
 app.use([middleware.rawBodyParser, middleware.encodedBodyParser, middleware.jsonBodyParser]);
 app.use(multiparty);
 
+app.get('/.well-known/acme-challenge/:id', function(req,res) {
+  res.sendFile(path.join(__dirname, '.well-known/acme-challenge', req.params.id));
+});
+
 // attaching routes
 attachRoutes(app);
 
