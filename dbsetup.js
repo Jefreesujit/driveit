@@ -21,8 +21,8 @@ var params = {
     { AttributeName: "email", AttributeType: "S" }
   ],
   ProvisionedThroughput: {
-    ReadCapacityUnits: 1,
-    WriteCapacityUnits: 1
+    ReadCapacityUnits: 5,
+    WriteCapacityUnits: 5
   }
 };
 
@@ -46,7 +46,7 @@ file structure
 
 User [
   user1: {
-    userId: "",
+    userid: "",
     name: "",
     email: "",
     pasword: "",
@@ -56,9 +56,10 @@ User [
         fileName: '',
         fileOperation: '',
         status: (success)
-        date: ''
+        timestamp: ''
       }
-    ]
+    ],
+    activityLogs: []
   }
 ]
 

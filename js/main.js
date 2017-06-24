@@ -4,6 +4,16 @@ function refreshList () {
   getFilesList();
 }
 
+function getBodyContent (data) {
+  if (data.length > 0) {
+    $('#noFileSection').hide();
+    $('#fileListHeader').show();
+  } else {
+    $('#fileListHeader').hide();
+    $('#noFileSection').show();
+  }
+}
+
 function deleteFile (fileKey) {
   $('#overlaySpinner').show();
   $.ajax({
@@ -35,6 +45,7 @@ function getFilesList () {
       if (response.sessionToken) {
         sessionStorage.setItem('accessToken', response.sessionToken);
       }
+      getBodyContent(response.Contents);
       response.Contents.map(function(file, index) {
         $('#fileList').append(
           '<div class="file-row" id="fileId_'+index+'">'+
@@ -73,6 +84,7 @@ $(document).on('dragover', function(e) {
   var dt = e.originalEvent.dataTransfer;
   if (dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
     $('#floatOver').removeClass('hide-overlay');
+    $('#uploadBtn').addClass('active');
     window.clearTimeout(dragTimer);
   }
 });
@@ -83,11 +95,14 @@ $(document).on('dragleave', function(e) {
   }
   dragTimer = window.setTimeout(function() {
     $('#floatOver').addClass('hide-overlay');
+    $('#uploadBtn').removeClass('active');
   }, 25);
 });
 
 $(document).ready(function() {
   $('#overlaySpinner').show();
+  $('#fileListHeader').hide();
+  $('#noFileSection').hide();
   getFilesList();
   Dropzone.options.fileDropzone = {
     headers: {
@@ -99,6 +114,7 @@ $(document).ready(function() {
       $('.dz-messge').show();
       $('.dz-preview').hide('');
       $('#floatOver').addClass('hide-overlay');
+      $('#uploadBtn').removeClass('active');
       refreshList();
     },
     error: function(file, done) {
@@ -107,5 +123,3 @@ $(document).ready(function() {
     }
   };
 });
-
-

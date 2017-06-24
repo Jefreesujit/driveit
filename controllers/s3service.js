@@ -1,6 +1,10 @@
-var AWS = require('aws-sdk');
 var fs = require('fs');
+var AWS = require('aws-sdk');
 
+AWS.config.update({
+  region: "us-west-2"
+});
+var docClient = new AWS.DynamoDB.DocumentClient();
 var bucketName = 'driveit.com';
 var s3 = new AWS.S3({
   accessKeyId: 'AKIAJOL562VDTNEAJ4UQ',
@@ -42,6 +46,7 @@ exports.upload = function (req, res) {
         res.status(500).send(err); // err on file upload
       } else {
         console.log("Successfully uploaded data to " + bucketName + "/" + file.originalFilename);
+        addFileLogs({fileName: file.originalFilename, email: req.user.data.username, operation: 'ADD'});
         res.status(200).send(true);
       }
     });
@@ -66,6 +71,7 @@ exports.getFile = function (req, res) {
     if (err) {
       res.status(500).send(err); // err on file download
     } else {
+      addFileLogs({fileName: req.params.fileKey, email: req.user.data.username, operation: 'DOWNLOAD'});
       res.setHeader('Content-disposition', 'attachment; filename='+req.params.fileKey);
       res.send(new Buffer(data.Body)); // data.body => buffer stream
     }
@@ -78,7 +84,40 @@ exports.deleteFile = function (req, res) {
     if (err) {
       res.status(500).send(err); // err on file deletion
     } else {
+      addFileLogs({fileName: req.params.fileKey, email: req.user.data.username, operation: 'DELETE'});
       res.status(200).send(data);
     }
   });
 };
+
+function addFileLogs (data) {
+  var record = {
+        fileName: data.fileName,
+        fileOperation: data.operation,
+        status: 'SUCCESS',
+        timestamp: new Date().toJSON()
+      },
+      params =  {
+        TableName: "Users",
+        Key:{
+          userid: data.email,
+          email: data.email
+        },
+        UpdateExpression: "set #fileLogs = list_append(#fileLogs, :record)",
+        ExpressionAttributeNames: {
+          '#fileLogs' : 'fileLogs'
+        },
+        ExpressionAttributeValues:{
+            ":record": [record]
+        },
+        ReturnValues:"UPDATED_NEW"
+      };
+
+  docClient.update(params, function (err, data) {
+    if (err) {
+      // console.log('file error', err);
+    } else {
+      // console.log('file success', data);
+    }
+  });
+}

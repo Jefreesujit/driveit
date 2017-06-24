@@ -1,54 +1,72 @@
 
-function userSignIn (data) {
+function userSignIn (header) {
   $.ajax({
     url:'/api/user-sign-in',
     method: 'post',
-    data: data,
+    headers: {
+      Authorization: 'basic ' + header
+    },
     success: function(response) {
+      $('#login-info-text').html('');
+      $('#login-info-text').removeClass('error');
       console.log(response.sessionToken);
       sessionStorage.setItem('accessToken', response.sessionToken);
       window.location = response.redirectUrl;
     },
     error: function (err) {
-      console.log(err);
+      $('#login-info-text').html(err.responseJSON.message);
+      $('#login-info-text').addClass('error');
       $('#overlaySpinner').hide();
     }
   });
 }
 
-function userSignUp (data) {
+function userSignUp (header) {
   $.ajax({
     url:'/api/user-sign-up',
     method: 'post',
-    data: data,
+    headers: {
+      Authorization: 'basic ' + header
+    },
     success: function(response) {
       console.log(response);
+      $('#reg-info-text').html('');
+      $('#reg-info-text').removeClass('error');
       $('#register-section').addClass('hide');
       $('#verify-section').removeClass('hide');
       $('#verify-email').val(response.email);
       $('#verify-email').prop("readonly", true);
+      $('#verify-info-text').html(response.message);
       $('#overlaySpinner').hide();
     },
     error: function (err) {
-      console.log(err);
+      $('#reg-info-text').html(err.responseJSON.message);
+      $('#reg-info-text').addClass('error');
       $('#overlaySpinner').hide();
     }
   });
 }
 
-function signUpVerify (data) {
+function signUpVerify (header) {
   $.ajax({
     url:'/api/verify-sign-up',
     method: 'post',
-    data: data,
+    headers: {
+      Authorization: 'basic ' + header
+    },
     success: function(response) {
       console.log(response);
+      $('#verify-info-text').html('');
+      $('#verify-info-text').removeClass('error');
       $('#register').addClass('hide');
       $('#login').removeClass('hide');
+      $('#login-info-text').html(response.message);
+      $('#login-info-text').removeClass('error');
       $('#overlaySpinner').hide();
     },
     error: function (err) {
-      console.log(err);
+      $('#verify-info-text').html(err.responseJSON.message);
+      $('#verify-info-text').addClass('error');
       $('#overlaySpinner').hide();
     }
   });
@@ -108,20 +126,23 @@ $('#register-tab').on('click', function() {
 
 $('#login-form').on('submit', function() {
   var email = $('#log-email').val(),
-      password = $('#log-password').val();
+      password = $('#log-password').val(),
+      header = btoa(email+':'+password);
+
   $('#overlaySpinner').show();
-  console.log({email, password});
-  userSignIn({email, password});
+  console.log({email, password, header});
+  userSignIn(header);
   return false;
 });
 
 $('#register-form').on('submit', function() {
   var email = $('#reg-email').val(),
       password = $('#reg-password').val(),
-      username = $('#reg-username').val();
+      username = $('#reg-username').val(),
+      header = btoa(email+':'+username+':'+password);
+
   $('#overlaySpinner').show();
-  userSignUp({email, username, password});
-  console.log({email, username, password});
+  userSignUp(header);
   return false;
 });
 
@@ -134,9 +155,11 @@ $('#pr-form').on('submit', function() {
 
 $('#verify-form').on('submit', function() {
   var email = $('#verify-email').val(),
-      pin = $('#verify-code').val();
+      pin = $('#verify-code').val(),
+      header = btoa(email+':'+pin);
+
   $('#overlaySpinner').show();
-  signUpVerify({email, pin});
+  signUpVerify(header);
   console.log({email, pin});
   return false;
 });

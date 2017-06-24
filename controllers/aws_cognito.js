@@ -130,7 +130,7 @@ exports.signInUser = function (email, password){
 			})
 			.catch((err)=>{
 				// if failure, reject the promise
-				rej('authentication error', err)
+				rej(err)
 			})
 	})
 	return p;
@@ -263,11 +263,11 @@ exports.verifyUserAccount = function (email, pin) {
 	        // if successful, we signout to refresh the cognitoUser (they will have to login again)
 					// actually this is not mandatory either, but during testing I discovered that login does not immediately work after verification due to un-refreshed authentication
 					// logging in again will get those authentication tokens
-	        if(result == "SUCCESS"){
+	        if(result == "SUCCESS") {
 	        	// console.log("Successfully verified account!")
 	        	// cognitoUser.signOut()
-	        	res("Successfully verified account!")
-	        }else{
+	        	res({success: true})
+	        }else {
 						// if otherwise failure, we reject the promise
 	        	rej("Could not verify account")
 	        }

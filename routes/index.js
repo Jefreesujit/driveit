@@ -41,6 +41,7 @@ var jwtValidator = function (req, res, next) {
     if(err && err.name === 'TokenExpiredError') {
       authCtrl.checkUserSession(function(data) {
         req.user.tokens = data;
+        req.user.data = jwt.decode(data.sessionToken, {complete: true}).payload;
         next();
       }, function(err) {
         console.log(err);

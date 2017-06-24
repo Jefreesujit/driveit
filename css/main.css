@@ -145,6 +145,9 @@ footer {
   overflow: auto;
   padding: 10px;
 }
+.files-container {
+  margin-top: 5%;
+}
 .spinner-overlay {
   position: fixed;
   top: 0;
@@ -178,7 +181,14 @@ footer {
   width: 60%;
   margin: 10% auto !important;
 }
-
+.no-file-section {
+  font-size: 3.5rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: lightgray;
+}
 
 /* ------------ Spinner css ------------- */
 
@@ -265,6 +275,10 @@ a {
 
 .form-text {
   color: #26a69a;
+}
+
+.form-text.error {
+  color: red;
 }
 
 button.btn.waves-effect.waves-light {
