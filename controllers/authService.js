@@ -1,6 +1,9 @@
+var path = require('path');
 var AWS = require('aws-sdk');
 var cognito = require('./aws_cognito.js');
+
 var docClient = new AWS.DynamoDB.DocumentClient();
+    pathName = __dirname.substring(0, __dirname.lastIndexOf('/'));
 
 var checkUserSession  = function(success, errorCallback) {
   var userLoggedIn = cognito.retrieveUserFromLocalStorage();
@@ -8,7 +11,6 @@ var checkUserSession  = function(success, errorCallback) {
 }
 
 var getAuthInfo = function (req) {
-
   if (req.headers.authorization) {
     var dataHeader = req.headers.authorization.split(' ')[1],
         authInfo = new Buffer(dataHeader, 'base64').toString('ascii'),
@@ -23,7 +25,7 @@ exports.homeController = function (req,res) {
   checkUserSession(function (successData) {
     console.log('userLoggedIn');
     // cognito.getCognitoId(); commented out temporarily
-    res.sendFile(req.buildDir +'/index.html');
+    res.sendFile(path.join(pathName, 'public', 'index.html'));
   }, function() {
     res.redirect('/login');
   });
@@ -33,7 +35,7 @@ exports.loginController = function (req,res) {
   checkUserSession(function (successData) {
     res.redirect('/');
   }, function() {
-    res.sendFile(req.buildDir + '/login.html');
+    res.sendFile(path.join(pathName, 'public', 'login.html'));
   });
 }
 
@@ -75,11 +77,12 @@ exports.verifySignUp = function (req, res) {
   });
 }
 
-exports.forgotPassword = function () {
+exports.forgotPassword = function (req, res) {
   // var signUp = cognito.signUpUser('jefree.sujit@gmail.com', 'admin', 'male', 'P@ssW0rd');
   // signUp.then(function(data) {
   //   console.log('===post signup data===', data);
   // });
+  res.status(500).send('error resetting password');
 }
 
 function addUserEntry (data) {
@@ -103,14 +106,6 @@ function addUserEntry (data) {
     }
   });
 }
-
-// function addActivityLogs () {
-//   {
-//     activity: 'User Sign In',
-//     status: 'success',
-//     timestamp: new Date();
-//   }
-// }
 
 function addActivityLogs (data) {
   var record = {

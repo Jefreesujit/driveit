@@ -1,10 +1,14 @@
 {
-  "name": "s3-fileupload",
+  "name": "drive-it",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Drive It allows you to store, retrieve and manage your files in cloud.",
+  "repository": {
+    "type": "git",
+    "url": "https://git-codecommit.us-west-2.amazonaws.com/v1/repos/s3-drive"
+  },
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js --harmony",
+    "start": "node server.js --harmony",
     "dbsetup": "node dbsetup.js --harmony",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
