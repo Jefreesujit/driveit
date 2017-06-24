@@ -1,0 +1,17 @@
+version: 0.1
+
+phases:
+  build:
+    commands:
+      - npm i
+
+artifacts:
+  files:
+    - server.js
+    - package.json
+    - dbsetup.js
+    - controllers/*
+    - middleware/*
+    - routes/*
+    - public/**/*
+    - node_modules/**/*
