@@ -10,7 +10,7 @@ function userSignIn (header) {
       $('#login-info-text').html('');
       $('#login-info-text').removeClass('error');
       console.log(response.sessionToken);
-      sessionStorage.setItem('accessToken', response.sessionToken);
+      localStorage.setItem('accessToken', response.sessionToken);
       window.location = response.redirectUrl;
     },
     error: function (err) {

@@ -20,7 +20,7 @@ function deleteFile (fileKey) {
     url:'api/delete-file/'+fileKey,
     method: 'post',
     headers: {
-      Authorization: 'Bearer ' + sessionStorage.getItem("accessToken")
+      Authorization: 'Bearer ' + localStorage.getItem("accessToken")
     },
     success: function(response) {
       refreshList();
@@ -33,7 +33,7 @@ function deleteFile (fileKey) {
 }
 
 function getFilesList () {
-  var authHeader = 'Bearer ' + sessionStorage.getItem("accessToken");
+  var authHeader = 'Bearer ' + localStorage.getItem("accessToken");
   $.ajax({
     url:'/api/get-files-list',
     method: 'get',
@@ -43,7 +43,7 @@ function getFilesList () {
     success: function(response) {
       console.log(response);
       if (response.sessionToken) {
-        sessionStorage.setItem('accessToken', response.sessionToken);
+        localStorage.setItem('accessToken', response.sessionToken);
       }
       getBodyContent(response.Contents);
       response.Contents.map(function(file, index) {
@@ -106,7 +106,7 @@ $(document).ready(function() {
   getFilesList();
   Dropzone.options.fileDropzone = {
     headers: {
-      Authorization: 'Bearer ' + sessionStorage.getItem("accessToken")
+      Authorization: 'Bearer ' + localStorage.getItem("accessToken")
     },
     paramName: "file", // The name that will be used to transfer the file
     maxFilesize: 25, // MB
