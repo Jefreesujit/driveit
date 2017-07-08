@@ -21,6 +21,7 @@
     "body-parser": "^1.17.2",
     "colors": "^1.1.2",
     "connect-multiparty": "^2.0.0",
+    "cookie-parser": "^1.4.3",
     "express": "^4.15.2",
     "jsonwebtoken": "^7.4.1",
     "jwk-to-pem": "^1.2.6"

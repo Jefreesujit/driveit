@@ -1,3 +1,4 @@
+var authCtrl = require('../controllers/authService');
 var bodyParser = require('body-parser');
 var jwt = require('jsonwebtoken');
 

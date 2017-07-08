@@ -14,6 +14,10 @@ var routes = function (app) {
     authCtrl.loginController(req,res);    
   });
 
+  app.get('/logout', function(req,res) {
+    authCtrl.loginController(req,res);    
+  });
+
   // user auth route end points
   app.post('/api/user-sign-in', authCtrl.userSignIn);
   app.post('/api/user-sign-up', authCtrl.userSignUp);

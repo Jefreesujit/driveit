@@ -23,9 +23,8 @@ header {
 }
 .message-box {
 	text-align: center;
-	line-height: 2rem;
   font-size: 1.75rem;
-  margin-bottom: 30px;
+  margin-bottom: 5%;
 }
 footer {
   position: absolute;
@@ -292,8 +291,9 @@ h5
 }
 
 .container {
-  margin-top: 40px;
-  width: 400px;
+  margin-top: 10px;
+  width: 90%;
+  max-width: 400px;
 }
 
 .tabs {
@@ -305,17 +305,21 @@ h5
   background-color: #e0f2f1;
   height: 60px;
   opacity: 0.3;
-  right: 200px;
+  right: 50%;
   left: 0px;
   transition: 0.3s;
 }
 
 .tabs .indicator.slide {
   transition: 0.3s;
-  left: 200px;
+  left: 50%;
   right: 0px;
 }
 
 .form-container {
   padding-top: 20px;
 }
+
+
+/* -------- mobile app --------- */
+

@@ -4,6 +4,7 @@ var path = require('path');
 var http = require('http').Server(app);
 var multiparty = require('connect-multiparty')();
 var attachRoutes = require('./routes');
+var cookieParser = require('cookie-parser');
 var middleware = require('./middleware');
 require('./dbsetup.js');
 
@@ -17,6 +18,7 @@ app.get('/fonts/roboto/*', function(req ,res){
 });
 
 // attaching middlewares
+app.use(cookieParser());
 app.use([middleware.rawBodyParser, middleware.encodedBodyParser, middleware.jsonBodyParser]);
 app.use(multiparty);
 

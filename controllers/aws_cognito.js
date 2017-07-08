@@ -421,12 +421,23 @@ exports.verifyUserAccount = function (email, pin) {
 // 	return p
 // }
 
+exports.getUserSession = function (email) {
+	var userData = {
+		Username: email,
+		Pool: userPool
+	}
+	// create the `cognitoUser` object
+	var cognitoUser = new CognitoUser(userData);
+	console.log(cognitoUser.getSession());
+}
+
 // // for automatic signin of a user (so they don't have to login each time)
 exports.retrieveUserFromLocalStorage = function () {
 	var p = new Promise((res, rej)=>{
 			// grab the `cognitoUser` object from `userPool`
 			// this is possible without login because we had already logged in before (whereas verifyPIN and resetPassword have not)
 	    var cognitoUser = userPool.getCurrentUser();
+	    console.log('Fix login issue', cognitoUser.username);
 	    console.log("Getting cognitoUser from local storage...")
 	    if (cognitoUser != null) {
 					// get the latest session from `cognitoUser`
@@ -471,15 +482,15 @@ exports.retrieveUserFromLocalStorage = function () {
 	return p;
 }
 
-// // signout the current user
-// export function signOutUser(){
-// 	var p = new Promise((res, rej)=>{
-// 		// since the user is already logged in, we can instantiate `cognitoUser` with `userPool`
-// 		var cognitoUser = userPool.getCurrentUser()
-// 		cognitoUser.signOut()
-// 	})
-// 	return p
-// }
+// signout the current user
+exports.signOutUser = function () {
+	var p = new Promise((res, rej)=>{
+		// since the user is already logged in, we can instantiate `cognitoUser` with `userPool`
+		var cognitoUser = userPool.getCurrentUser()
+		cognitoUser.signOut()
+	})
+	return p;
+}
 
 // // login to cognito using Facebook instead of an AWS email/password login flow
 // // requires first logging in with Facebook and passing in the result of the login function to `registerFacebookLoginWithCognito()`
