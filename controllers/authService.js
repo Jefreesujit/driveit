@@ -1,13 +1,30 @@
 var path = require('path');
 var AWS = require('aws-sdk');
 var cognito = require('./aws_cognito.js');
+var jwt = require('jsonwebtoken');
 
 var docClient = new AWS.DynamoDB.DocumentClient();
     pathName = __dirname.substring(0, __dirname.lastIndexOf('/'));
 
-var checkUserSession  = function(success, errorCallback, email) {
-  cognito.getUserSession('e.jefree110@gmail.com');
-  var userLoggedIn = cognito.retrieveUserFromLocalStorage();
+var getEmailFromCookie = function (req) {
+  var email = '';
+
+  if (req.cookies['drive-it-access-token']) {
+    var token = req.cookies['drive-it-access-token'],
+        decoded = jwt.decode(token, {complete: true}).payload;
+    email = decoded.username;
+    //console.log(decoded.username);
+  } else {
+    console.log('access token not found in cookie')
+  }
+
+  return email;
+}
+
+var checkUserSession  = function(req, success, errorCallback) {
+  //console.log('session cookies', req.cookies);
+  var emailId = getEmailFromCookie(req);
+  var userLoggedIn = cognito.retrieveUserFromLocalStorage(emailId);
   userLoggedIn.then(success, errorCallback);
 }
 
@@ -23,15 +40,16 @@ var getAuthInfo = function (req) {
 }
 
 exports.homeController = function (req,res) {
-  console.log('home', req.cookies);
-  checkUserSession(function (successData) {
+  // console.log('home', req.cookies);
+  console.log('home redirect', req.headers.referer);
+  checkUserSession(req, function (successData) {
     console.log('userLoggedIn');
     // cognito.getCognitoId(); commented out temporarily
     res.sendFile(path.join(pathName, 'public', 'index.html'));
-  }, function() {
+  }, function(err) {
+    console.log('home', err);
     res.redirect('/login');
   });
-
 
   // var sessionToken = (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined;
   // console.log('sessionToken', sessionToken); 
@@ -46,10 +64,12 @@ exports.homeController = function (req,res) {
 };
 
 exports.loginController = function (req,res) {
-  console.log('login', req.cookies);
-  checkUserSession(function (successData) {
+  // console.log('login', req.cookies);
+  console.log('login redirect', req.headers.referer);
+  checkUserSession(req, function (successData) {
     res.redirect('/');
-  }, function() {
+  }, function(err) {
+    console.log('login error', err);
     res.sendFile(path.join(pathName, 'public', 'login.html'));
   });
 
@@ -61,12 +81,15 @@ exports.loginController = function (req,res) {
 }
 
 exports.logoutController = function (req, res) {
-  var signOut = cognito.signOutUser();
+  var emailId = getEmailFromCookie(req);
+  console.log('logout mail id', emailId);
+  var signOut = cognito.signOutUser(emailId);
   signOut.then(function(data) {
+    console.log('sign out success', data);     
     res.clearCookie('drive-it-access-token');
     res.redirect('/login');
   }, function(err) {
-    res.redirect('/');     
+    res.redirect('/');
   });
 };
 
@@ -75,7 +98,7 @@ exports.userSignIn =  function (req, res) {
       signIn = cognito.signInUser.apply(null, authData);
   signIn.then(function(data) {
     addActivityLogs({email: authData[0]});
-    console.log('===post login ===', data.sessionToken);
+    console.log('===post login ===');
     data.redirectUrl = '/';
     res.cookie('drive-it-access-token', data.sessionToken);
     res.status(200).json(data);

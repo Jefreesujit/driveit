@@ -421,33 +421,32 @@ exports.verifyUserAccount = function (email, pin) {
 // 	return p
 // }
 
-exports.getUserSession = function (email) {
-	var userData = {
-		Username: email,
-		Pool: userPool
-	}
-	// create the `cognitoUser` object
-	var cognitoUser = new CognitoUser(userData);
-	console.log(cognitoUser.getSession());
-}
-
 // // for automatic signin of a user (so they don't have to login each time)
-exports.retrieveUserFromLocalStorage = function () {
+exports.retrieveUserFromLocalStorage = function (email) {
 	var p = new Promise((res, rej)=>{
 			// grab the `cognitoUser` object from `userPool`
 			// this is possible without login because we had already logged in before (whereas verifyPIN and resetPassword have not)
-	    var cognitoUser = userPool.getCurrentUser();
-	    console.log('Fix login issue', cognitoUser.username);
+	    // var cognitoUser = userPool.getCurrentUser();
+	    //console.log('email', email);
+		var userData = {
+			Username: email,
+			Pool: userPool
+		}
+		// create the `cognitoUser` object
+		var cognitoUser = new CognitoUser(userData);
+		//console.log('cognitoUser', cognitoUser);
 	    console.log("Getting cognitoUser from local storage...")
 	    if (cognitoUser != null) {
+	    	//console.log('Fix login issue', cognitoUser.username);
 					// get the latest session from `cognitoUser`
 	        cognitoUser.getSession(function(err, session) {
 							// if failed to get session, reject the promise
 	            if (err) {
+	            	console.log('get session error', err)
 	                rej(err)
 					return;
 	            }
-							// check that the session is valid
+				// check that the session is valid
 	            console.log('session validity: ' + session.isValid());
 	            //console.log(session);
 							// save to localStorage the jwtToken from the `session`
@@ -483,12 +482,19 @@ exports.retrieveUserFromLocalStorage = function () {
 }
 
 // signout the current user
-exports.signOutUser = function () {
-	var p = new Promise((res, rej)=>{
+exports.signOutUser = function (email) {
+	var p = new Promise((res, rej) => {
 		// since the user is already logged in, we can instantiate `cognitoUser` with `userPool`
-		var cognitoUser = userPool.getCurrentUser()
-		cognitoUser.signOut()
-	})
+		var userData = {
+			Username: email,
+			Pool: userPool
+		}
+		// create the `cognitoUser` object
+		var cognitoUser = new CognitoUser(userData);
+		console.log('signOut', cognitoUser.signOut);
+		cognitoUser.signOut();
+		res(email);
+	});
 	return p;
 }
 

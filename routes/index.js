@@ -15,7 +15,7 @@ var routes = function (app) {
   });
 
   app.get('/logout', function(req,res) {
-    authCtrl.loginController(req,res);    
+    authCtrl.logoutController(req,res);    
   });
 
   // user auth route end points

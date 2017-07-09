@@ -16,7 +16,7 @@ var s3 = new AWS.S3({
 });
 
 function getFolderName (req) {
-  console.log(req.user.data);
+  console.log('folder name', req.user.data);
   return req.user.data.username.replace('@','-') + '/';
 }
 

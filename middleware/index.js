@@ -55,7 +55,7 @@ exports.jwtValidator = function (req, res, next) {
   jwt.verify(authToken, pem, { issuer: decodedJwt.payload.iss }, function(err, payload) {
     req.user = req.user || {};
     if(err && err.name === 'TokenExpiredError') {
-      authCtrl.checkUserSession(function(data) {
+      authCtrl.checkUserSession(req, function(data) {
         req.user.tokens = data;
         req.user.data = jwt.decode(data.sessionToken, {complete: true}).payload;
         next();
