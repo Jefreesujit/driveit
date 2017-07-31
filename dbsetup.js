@@ -39,28 +39,3 @@ dynamodb.describeTable({TableName: 'Users'}, function(err, data) {
     console.log(JSON.stringify(data.Table.TableName, null, 2) + " table already exists");
   }
 });
-
-
-/* 
-file structure 
-
-User [
-  user1: {
-    userid: "",
-    name: "",
-    email: "",
-    pasword: "",
-    fileLogs: [
-      file1: {
-        fileId: '',
-        fileName: '',
-        fileOperation: '',
-        status: (success)
-        timestamp: ''
-      }
-    ],
-    activityLogs: []
-  }
-]
-
-*/

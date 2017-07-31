@@ -26,7 +26,6 @@ function deleteFile (fileKey) {
       refreshList();
     },
     error: function(err) {
-      console.log('file delete error', err);
       $('#overlaySpinner').hide();
     }
   });
@@ -41,7 +40,6 @@ function getFilesList () {
       Authorization: authHeader
     },
     success: function(response) {
-      console.log(response);
       if (response.sessionToken) {
         localStorage.setItem('accessToken', response.sessionToken);
       }
@@ -62,7 +60,6 @@ function getFilesList () {
       $('#overlaySpinner').hide();
     },
     error: function(err) {
-      console.log('file fetch error', err);
       $('#overlaySpinner').hide();
     }
   });

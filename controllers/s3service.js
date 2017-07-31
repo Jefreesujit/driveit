@@ -16,7 +16,6 @@ var s3 = new AWS.S3({
 });
 
 function getFolderName (req) {
-  console.log('folder name', req.user.data);
   return req.user.data.username.replace('@','-') + '/';
 }
 
@@ -39,14 +38,12 @@ exports.upload = function (req, res) {
   var file = req.files.file;
   fs.readFile(file.path, function (err, data) {
     var filePath = getFolderName(req) + file.originalFilename;
-    console.log(filePath);
     var params = { Key: filePath, Body: data} ;
     s3.upload(params, function(err, putData) {
       fs.unlink(file.path);  // delete the temp file
       if (err) {
         res.status(500).send(err); // err on file upload
       } else {
-        console.log("Successfully uploaded data to " + bucketName + "/" + file.originalFilename);
         addFileLogs({fileName: file.originalFilename, email: req.user.data.username, operation: 'ADD'});
         res.status(200).send(true);
       }

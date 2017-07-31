@@ -9,7 +9,6 @@ function userSignIn (header) {
     success: function(response) {
       $('#login-info-text').html('');
       $('#login-info-text').removeClass('error');
-      console.log(response.sessionToken);
       localStorage.setItem('accessToken', response.sessionToken);
       window.location = response.redirectUrl;
     },
@@ -29,7 +28,6 @@ function userSignUp (header) {
       Authorization: 'basic ' + header
     },
     success: function(response) {
-      console.log(response);
       $('#reg-info-text').html('');
       $('#reg-info-text').removeClass('error');
       $('#register-section').addClass('hide');
@@ -55,7 +53,6 @@ function signUpVerify (header) {
       Authorization: 'basic ' + header
     },
     success: function(response) {
-      console.log(response);
       $('#verify-info-text').html('');
       $('#verify-info-text').removeClass('error');
       $('#register').addClass('hide');
@@ -130,7 +127,6 @@ $('#login-form').on('submit', function() {
       header = btoa(email+':'+password);
 
   $('#overlaySpinner').show();
-  console.log({email, password, header});
   userSignIn(header);
   return false;
 });
@@ -148,8 +144,6 @@ $('#register-form').on('submit', function() {
 
 $('#pr-form').on('submit', function() {
   var email = $('#pr-email').val();
-  // $('#overlaySpinner').show();
-  console.log({email});
   return false;
 });
 
@@ -160,29 +154,8 @@ $('#verify-form').on('submit', function() {
 
   $('#overlaySpinner').show();
   signUpVerify(header);
-  console.log({email, pin});
   return false;
 });
-
-// function makeRequest(url, data, callBack) {
-//   $.ajax({
-//       url: url,
-//       method: 'post',
-//       data: data,
-//       success: function (response) {
-//         return {
-//           type: 'success',
-//           data: response
-//         };
-//       },
-//       error: function (err) {
-//         return {
-//           type: 'error',
-//           data: err
-//         };
-//       }
-//     });
-// }
 
 $(document).ready(function() {
   $('#overlaySpinner').hide();

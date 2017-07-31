@@ -13,16 +13,14 @@ var getEmailFromCookie = function (req) {
     var token = req.cookies['drive-it-access-token'],
         decoded = jwt.decode(token, {complete: true}).payload;
     email = decoded.username;
-    //console.log(decoded.username);
   } else {
-    console.log('access token not found in cookie')
+    console.error('access token not found in cookie')
   }
 
   return email;
 }
 
 var checkUserSession  = function(req, success, errorCallback) {
-  //console.log('session cookies', req.cookies);
   var emailId = getEmailFromCookie(req);
   var userLoggedIn = cognito.retrieveUserFromLocalStorage(emailId);
   userLoggedIn.then(success, errorCallback);
@@ -40,52 +38,26 @@ var getAuthInfo = function (req) {
 }
 
 exports.homeController = function (req,res) {
-  // console.log('home', req.cookies);
-  console.log('home redirect', req.headers.referer);
   checkUserSession(req, function (successData) {
-    console.log('userLoggedIn');
     // cognito.getCognitoId(); commented out temporarily
     res.sendFile(path.join(pathName, 'public', 'index.html'));
   }, function(err) {
-    console.log('home', err);
     res.redirect('/login');
   });
-
-  // var sessionToken = (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined;
-  // console.log('sessionToken', sessionToken); 
-  // res.cookie('drive-it-access-token', sessionToken);
-
-  // // if (req.headers.referer && req.headers.referer.indexOf('/login') !== -1) {
-  // //   res.sendFile(path.join(pathName, 'public', 'index.html'));
-  // // } else {
-  // //   res.redirect('/login');
-  // // }
-  // res.sendFile(path.join(pathName, 'public', 'index.html'));
 };
 
 exports.loginController = function (req,res) {
-  // console.log('login', req.cookies);
-  console.log('login redirect', req.headers.referer);
   checkUserSession(req, function (successData) {
     res.redirect('/');
   }, function(err) {
-    console.log('login error', err);
     res.sendFile(path.join(pathName, 'public', 'login.html'));
   });
-
-  // if ((req.headers.referer && req.headers.referer.indexOf('/logout') === -1) || req.cookies['drive-it-access-token']) {
-  //   res.redirect('/');
-  // } else {
-  //   res.sendFile(path.join(pathName, 'public', 'login.html'));
-  // }
 }
 
 exports.logoutController = function (req, res) {
-  var emailId = getEmailFromCookie(req);
-  console.log('logout mail id', emailId);
-  var signOut = cognito.signOutUser(emailId);
-  signOut.then(function(data) {
-    console.log('sign out success', data);     
+  var emailId = getEmailFromCookie(req),
+      signOut = cognito.signOutUser(emailId);
+  signOut.then(function(data) {    
     res.clearCookie('drive-it-access-token');
     res.redirect('/login');
   }, function(err) {
@@ -98,7 +70,6 @@ exports.userSignIn =  function (req, res) {
       signIn = cognito.signInUser.apply(null, authData);
   signIn.then(function(data) {
     addActivityLogs({email: authData[0]});
-    console.log('===post login ===');
     data.redirectUrl = '/';
     res.cookie('drive-it-access-token', data.sessionToken);
     res.status(200).json(data);
@@ -111,7 +82,6 @@ exports.userSignUp = function (req, res) {
   var authData = getAuthInfo(req),
       signUp = cognito.signUpUser.apply(null, authData);
   signUp.then(function(data) {
-    console.log('===post signup data===', data);
     data.message = 'A verification code has been sent to your email. Kindly use the code to complete the process.';
     addUserEntry({email: authData[0], username: authData[1], password: authData[2]});
     res.status(200).json(data);
@@ -124,7 +94,6 @@ exports.verifySignUp = function (req, res) {
   var authData = getAuthInfo(req),
       verify = cognito.verifyUserAccount.apply(null, authData);
   verify.then(function(data) {
-    console.log('===post verify data===', data);
       data.message = 'Registered successfully. Please login to continue.';
       res.status(200).json(data);
   }, function(err) {
@@ -155,9 +124,9 @@ function addUserEntry (data) {
 
   docClient.put(params, function (err, data) {
     if (err) {
-      console.log('error', err);
+      // console.log('error', err);
     } else {
-      console.log('success', data);
+      // console.log('success', data);
     }
   });
 }

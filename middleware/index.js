@@ -31,7 +31,7 @@ exports.encodedBodyParser = function (req, res, next) {
 exports.jwtValidator = function (req, res, next) {
   var authToken = getAuthToken(req);
   if (!authToken) {
-    console.log('Access token not found');
+    console.error('Access token not found');
     res.status(401).send('UnAuthorized: Invalid access token');
     return;
   }
@@ -47,7 +47,7 @@ exports.jwtValidator = function (req, res, next) {
   var pem = pems[kid];
 
   if (!pem) {
-    console.log('Invalid access token');
+    console.error('Invalid access token');
     res.status(401).send('UnAuthorized: Invalid access token');
   }
 
@@ -60,11 +60,11 @@ exports.jwtValidator = function (req, res, next) {
         req.user.data = jwt.decode(data.sessionToken, {complete: true}).payload;
         next();
       }, function(err) {
-        console.log(err);
+        console.error(err);
         res.status(401).send('UnAuthorized: Invalid access token');
       });
     } else if (err) {
-      console.log(err);
+      console.error(err);
       res.status(401).send('UnAuthorized: Invalid access token');      
     } else {
       req.user.data = payload;
