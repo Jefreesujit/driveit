@@ -1,23 +1,21 @@
-var selectedArray = [];
+var selectedArray = [],
+    selectedId;
 
 function refreshList () {
   $('#overlaySpinner').show();
   $('#fileList').html('');
+  $('#actionPane').addClass('hide');
   getFilesList();
 }
 
 function getBodyContent (data) {
   if (data.length > 0) {
     $('#noFileSection').hide();
-    $('#fileListHeader').show();
+    $('#topPane').show();
   } else {
-    $('#fileListHeader').hide();
+    $('#topPane').hide();
     $('#noFileSection').show();
   }
-}
-
-function showActionMenu() {
-
 }
 
 function bytesToSize (bytes) {
@@ -70,7 +68,7 @@ function getFilesList () {
         var modifiedDate = new Date(file.LastModified).toDateString().substring(4),
             encodeKey = encodeURI(file.Key);
         $('#fileList').append(
-          '<div class="file-row" onclick="selectFile(this)" id="fileId_'+index+'" data-key='+encodeKey+'>'+
+          '<div class="file-row" ondblclick="openFile(this)" onclick="selectFile(this)" id="fileId_'+index+'" data-key='+encodeKey+'>'+
             '<div class="file-name data-key='+encodeKey+'">'+file.Key+'</div>'+
             '<div class="file-date data-key='+encodeKey+'">'+ modifiedDate +'</div>'+
             '<div class="file-size data-key='+encodeKey+'">'+ bytesToSize(file.Size) +'</div>'+
@@ -86,39 +84,57 @@ function getFilesList () {
 }
 
 function selectFile(file) {
-  console.log(file);
   var id = '#'+$(file).attr('id'),
-      key = $(file).data('key');
+      key = $(file).data('key'),
+      authHeader = 'Bearer ' + localStorage.getItem("accessToken"),
+      fileurl = '/api/get-file/'+key+'?Authorization='+authHeader,
+      iframeUrl = 'https://docs.google.com/gview?url=https://driveit.us-west-2.elasticbeanstalk.com' + fileurl + '&embedded=true';
 
   if($(id).hasClass('selected')) {
     $(id).removeClass('selected');
-    selectedArray.splice(selectedArray.indexOf(key), 1);
+    selectedId = '';
+    $('#actionPane').addClass('hide');
   } else {
+    $(selectedId).removeClass('selected');
     $(id).addClass('selected');
-    selectedArray.push(key);
+    $('#downloadBtn').attr('href', fileurl);
+    // $('#fileViewer').attr('src', iframeUrl);
+    selectedId = id;
+    $('#actionPane').removeClass('hide');
   }
+
+  // if($(id).hasClass('selected')) {
+  //   $(id).removeClass('selected');
+  //   selectedArray.splice(selectedArray.indexOf(key), 1);
+  // } else {
+  //   $(id).addClass('selected');
+  //   selectedArray.push(key);
+  // }
 }
 
-function openFile (id, key) {
-  console.log(id, key);
-  var authHeader = 'Bearer ' + localStorage.getItem("accessToken"),
-      iframeUrl = '/api/get-file/'+key+'?Authorization='+authHeader;
+$('#deleteFileBtn').on('click', function(event) {
+  var delKey = $(selectedId).data('key');
+  deleteFile(delKey); 
+})
+
+function openFile (file) {
+  var id = '#'+$(file).attr('id'),
+      key = $(file).data('key'),
+      authHeader = 'Bearer ' + localStorage.getItem("accessToken"),
+      fileurl = '/api/get-file/'+key+'?Authorization='+authHeader,
+      iframeUrl = 'https://docs.google.com/gview?url=https://driveit.us-west-2.elasticbeanstalk.com' + fileurl + '&embedded=true';
 
   $('#fileViewer').attr('src', iframeUrl);
   $('#fileViewOverlay').show();
 }
 
-// $('.file-row').on('click', function(event) {
-//   selectFile('#'+event.target.id, event.target.dataset.key);
-// });
-
-$('.file-row').on('dblclick', function(event) {
-  openFile('#'+event.target.id, event.target.dataset.key);
+$('#previewBtn').on('click', function(event) {
+  openFile(this);
 });
 
 $('#closeFileView').on('click', function () {
   $('#fileViewOverlay').hide();
-  // $('#fileViewer').attr('src', '');
+  $('#fileViewer').attr('src', '');
 });
 
 $('#uploadBtn').on('click', function() {
@@ -153,9 +169,12 @@ $(document).on('dragleave', function(e) {
 });
 
 $(document).ready(function() {
+  var name = JSON.parse(localStorage.getItem("userData")).name;
   $('#overlaySpinner').show();
-  $('#fileListHeader').hide();
   $('#noFileSection').hide();
+  $('#fileViewOverlay').hide();
+  $('#profileName').text(name);
+  $('#profileIcon').html(name[0]);
   getFilesList();
   Dropzone.options.fileDropzone = {
     headers: {

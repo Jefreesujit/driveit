@@ -8,7 +8,7 @@ var AWS = require('aws-sdk');
 require('amazon-cognito-js');
 require('colors');
 var jwkToPem = require('jwk-to-pem');
-
+var jwt = require('jsonwebtoken');
 //import { userPool, USERPOOL_ID, IDENTITY_POOL_ID } from './aws_profile'
 // var uuid = require('node-uuid');
 
@@ -170,9 +170,22 @@ function authenticateUser(cognitoUser, authenticationDetails){
         AWS.config.credentials.refresh(function(){
           //console.log(AWS.config.credentials)
         })
+
+        // buildUserObject(cognitoUser).then(function(data) {
+        //   var userData = data;
+        // });
         // resolve the promise to move on to next step after authentication
+        var decodedPayload = jwt.decode(result.idToken.jwtToken, {complete: true}).payload,
+            userData = {
+              email: decodedPayload.email,
+              gender: decodedPayload.gender,
+              name: decodedPayload.name,
+              verified: decodedPayload.email_verified 
+            };
+
         res({
           success: true,
+          userData: userData,
           idToken: result.idToken.jwtToken,
           sessionToken: result.accessToken.jwtToken,
           refreshToken: result.refreshToken.token
@@ -210,36 +223,36 @@ function authenticateUser(cognitoUser, authenticationDetails){
   return p
 }
 
-// // buildUserObject() gets the user attributes from Cognito and creates an object to represent our user
-// // this will be used by the Redux state so that we can reference the user
-// function buildUserObject(cognitoUser){
-//  var p = new Promise((res, rej)=>{
-//    // call the cognito function `getUserAttributes()`
-//    cognitoUser.getUserAttributes(function(err, result) {
-//          if (err) {
-//              console.log(err);
-//              rej(err)
-//              return
-//          }
-//          // instantiate an empty object
-//          let userProfileObject = {}
-//          // loop through the userAttributes and append to `userProfileObject` as attributes
-//          for (let i = 0; i < result.length; i++) {
-//            // custom Cognito attributes will be prefixed with `custom:`, so we must strip away that from the string
-//            if(result[i].getName().indexOf('custom:') >= 0){
-//            let name = result[i].getName().slice(7, result[i].getName().length)
-//            userProfileObject[name] = result[i].getValue()
-//          }else{
-//            // normal Cognito attributes will not be prefixed with `custom:` so we can use use the string immediately
-//            userProfileObject[result[i].getName()] = result[i].getValue()
-//          }
-//        }
-//        // and now our user profile object is complete and we resolve the promise to move on to the next step
-//        res(userProfileObject)
-//      })
-//  })
-//  return p
-// }
+// buildUserObject() gets the user attributes from Cognito and creates an object to represent our user
+// this will be used by the Redux state so that we can reference the user
+function buildUserObject(cognitoUser){
+ var p = new Promise((res, rej)=>{
+   // call the cognito function `getUserAttributes()`
+   cognitoUser.getUserAttributes(function(err, result) {
+         if (err) {
+             console.log(err);
+             rej(err)
+             return
+         }
+         // instantiate an empty object
+         var userProfileObject = {}
+         // loop through the userAttributes and append to `userProfileObject` as attributes
+         for (var i = 0; i < result.length; i++) {
+           // custom Cognito attributes will be prefixed with `custom:`, so we must strip away that from the string
+           if(result[i].getName().indexOf('custom:') >= 0){
+           var name = result[i].getName().slice(7, result[i].getName().length)
+           userProfileObject[name] = result[i].getValue()
+         }else{
+           // normal Cognito attributes will not be prefixed with `custom:` so we can use use the string immediately
+           userProfileObject[result[i].getName()] = result[i].getValue()
+         }
+       }
+       // and now our user profile object is complete and we resolve the promise to move on to the next step
+       res(userProfileObject)
+     })
+ })
+ return p
+}
 
 // when users sign up, they need to verify their account
 // verification requires their unique identifier (in this case, their email) and the verification PIN
