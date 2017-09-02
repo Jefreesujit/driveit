@@ -15,6 +15,10 @@
       <div class="loader page-spinner">
       </div>
     </div>
+    <div id="fileViewOverlay" class="spinner-overlay">
+      <div class="close-fileview" id="closeFileView">X</div>
+      <iframe id="fileViewer" class="doc hide" src="https://docs.google.com/gview?url=https://driveit.us-west-2.elasticbeanstalk.com/api/get-file/springerformat.doc?Authorization=Bearer%20eyJraWQiOiJ2eE1xcGpOTElZTlVLaVBEbkxPbHpXbXhES1ZwTjBoTm01TUNxSlY1YkM0PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI3YjAxMDU0Yy03N2FkLTQzZjktYmQ3YS1jMDU5NDljZWYwYTgiLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIiwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLXdlc3QtMi5hbWF6b25hd3MuY29tXC91cy13ZXN0LTJfWUE0RU9CbTRkIiwiZXhwIjoxNTA0MjQ3NTAyLCJpYXQiOjE1MDQyNDM5MDIsImp0aSI6ImQ4NmYzMjM0LTRkN2MtNGRlZS04YjczLTdkZjNiMmM3MzljMSIsImNsaWVudF9pZCI6IjRuM2JsNmltc3VyMnBkNzlkajZsbGU4YThxIiwidXNlcm5hbWUiOiJqZWZyZWUuc3VqaXRAZ21haWwuY29tIn0.M5AGUvFqd3LNRRabDJIAmJ8y1WiSkwcT1dxu05EguBNJBNGZNvFuEnXTO5yMLrqETQzIbyD7pupnmHncVfWMW86LOcUPoDMoRqmUE90Qn0xGbm-MYXNU_5NWA6zIxMfsPFqC0XQtLSfOqkSBG77t049NrJlA-aLwj0oA8s5Z5-28lwJnFDFWBFfQJUVVGSsFuGIZx2hJlvktK_yWUMvXANeXeCCsCukKYmF7hZJGN4AqrkYJAubr4spVvGTbrMKlwZTiX4WQYqid7-x6K63H9LzMZ1jsTd-q0nfgGqNwNBDSprJGv6KbtovfWLfmjO8mrbgODwQX4ljFqnWsWkbVzA&embedded=true"></iframe>
+    </div>
     <header id="header">
       <div class="row">
         <div class="page-header">
@@ -23,19 +27,40 @@
       </div>
     </header>
     <main id="body">
-      <div class="row">
+      <div class="">
         <div class="page-container">
+          <div class="left-pane" id="leftPane">
+            <div class="top-section">
+              <div id="profileIcon" class="profile-icon">JS</div>
+              <div id="profileName" class="profile-name">Jefree Sujit</div>
+            </div>
+            <div class="nav-section">
+              <ul class="nav-list">
+                <li class="selected"><a href="/">My Drive</a></li>
+                <li><a>My Activity</a></li>
+                <li><a>Profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
           <div id="centerPane" class="center-pane">
+            <div class="top-pane" id="topPane">
+              <div class="action-ribbon">
+                <div id="actionPane" class="hide">
+                  <a class="download-btn" id="downloadBtn" href="">Download</a>
+                  <a class="delete-btn" id="deleteFileBtn">Delete</a>
+                </div>
+              </div>
+              <div id="fileListHeader" class="file-list-header">
+                <div class="file-row title">
+                  <div class="file-name title"> File Name </div>
+                  <div class="file-date title"> Date Modified </div>
+                  <div class="file-size title"> File Size </div>
+                </div>
+              </div>
+            </div>
             <div class="row center">
               <div class="files-container col s12">
-                <div id="fileListHeader" class="file-list-header">
-                  <div class="file-row title">
-                    <div class="file-name title"> File Name </div>
-                    <div class="file-date title"> Date Modified </div>
-                    <div class="file-size title"> File Size </div>
-                    <div class="file-actions title"></div>
-                  </div>
-                </div>
                 <div id="fileList" class="file-list-section">
                 </div>
                 <div id="noFileSection" class="no-file-section">

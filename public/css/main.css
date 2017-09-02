@@ -19,12 +19,13 @@ header {
 	-webkit-font-smoothing: antialiased;
 }
 .page-container {
-	min-height: 100%;
+  display: flex;
+  height: calc(100vh - 84px); 
 }
 .message-box {
 	text-align: center;
   font-size: 1.75rem;
-  margin-bottom: 5%;
+  margin: 3%;
 }
 footer {
   position: absolute;
@@ -44,14 +45,24 @@ footer {
 	display: inline-block;
 	box-sizing: border-box;
 }
-.left-pane, .right-pane {
-	margin: 5%;
-	float: left;
-	width: 40%;
-	box-sizing: border-box;
+.doc {
+    width: 90%;
+    margin: 5%;
+    height: calc(100vh - 12%)
+}
+.left-pane {
+  flex: 1;
+  box-shadow: 0px 0px 10px 0px;
+  z-index: 8;
+  min-width: 250px;
 }
 .center-pane {
-	margin: 3% 6%;
+  flex: 4;
+  min-width: 800px;
+}
+.top-pane {
+  height: 100px;
+  box-shadow: 5px 0px 6px 0px;
 }
 .collection .collection-item.avatar {
 	min-height: 60px;
@@ -98,14 +109,27 @@ footer {
   cursor: pointer;
   box-shadow: 0px 1px 12px 0px rgb(0, 0, 0);
 }
+.files-container {
+  margin-top: 10px;
+}
 .file-row {
   display: flex;
   padding: 10px;
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid lightgray;
+  border-top: 1px solid transparent;
+  cursor: pointer;
 }
-.title {
+.file-list-header .title {
   font-weight: bold;
   color: darkslategray;
+  border-right: 2px solid lightgray;
+}
+.file-list-header .file-row {
+  line-height: 30px;
+  padding: 6px 15px;
+}
+.file-list-header .file-date, .file-list-header .file-size {
+  text-align: center;
 }
 .file-name {
   flex: 3;
@@ -115,6 +139,10 @@ footer {
 .file-date, .file-actions, .file-size {
   margin: auto;
   flex: 1;
+}
+.action-ribbon {
+  height: 50px;
+  margin-bottom: 6px;
 }
 .file-actions {
   text-align: right;
@@ -139,13 +167,16 @@ footer {
   cursor: pointer;
   text-decoration: underline;
 }
+.file-list-header {
+  background: #f1f1f1;
+}
 .file-list-section {
   max-height: 500px;
   overflow: auto;
-  padding: 10px;
 }
-.files-container {
-  margin-top: 5%;
+.file-list-section .file-row.selected {
+  background: #26a69a;
+  color: white;
 }
 .spinner-overlay {
   position: fixed;
@@ -155,6 +186,47 @@ footer {
   width: 100%;
   background: rgba(0, 0, 0, 0.4);
   z-index: 500;
+}
+.top-section {
+  height: 200px;
+}
+.nav-list li {
+  line-height: 50px;
+  text-align: center;
+  align-items: center;
+  font-size: 16px;
+  letter-spacing: 0.5px;
+}
+.nav-list li:hover {
+  font-weight: bold;
+  color: #26a69a;
+  box-shadow: 0px 2px 6px 0px grey;
+}
+.nav-list li.selected {
+  font-weight: bold;
+  background: #26a69a;
+  box-shadow: 0px 2px 6px 0px grey;
+  color: white;
+}
+.nav-list li a {
+    color: inherit;
+}
+.profile-icon {
+  background: #26a69a;
+  color: white;
+  height: 100px;
+  width: 100px;
+  margin: 20px auto;
+  border-radius: 50px;
+  font-size: 60px;
+  padding: 8px 14px;
+  text-transform: capitalize;
+}
+.profile-name {
+  text-align: center;
+  font-size: 24px;
+  color: darkslategray;
+  letter-spacing: 0.5px;
 }
 
 /* ------------- Overrides ------------- */

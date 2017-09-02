@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drive It</title>
+    <meta name="description" content="Drive In Cloud" />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" href="materialize.min.css">
+    <link rel="stylesheet" href="main.css" type="text/css" />
+    <link rel="stylesheet" href="dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="basic.min.css" type="text/css" />
+  </head>
+  <body>
+    <div id="overlaySpinner" class="spinner-overlay">
+      <div class="loader page-spinner">
+      </div>
+    </div>
+    <header id="header">
+      <div class="row">
+        <div class="page-header">
+          Drive It
+        </div>
+      </div>
+    </header>
+    <main id="body">
+      <div class="">
+        <div class="page-container">
+          <div class="left-pane" id="leftPane">
+            <div class="top-section">
+              <div id="profileIcon" class="profile-icon">JS</div>
+              <div id="profileName" class="profile-name">Jefree Sujit</div>
+            </div>
+            <div class="nav-section">
+              <ul class="nav-list">
+                <li ><a href="/">My Drive</a></li>
+                <li class="selected"><a href="/activity">My Activity</a></li>
+                <li><a>Profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+              </ul>
+            </div>
+          </div>
+          <div id="centerPane" class="center-pane">
+            <div class="top-pane" id="topPane">
+              <div class="action-ribbon">
+              </div>
+              <div id="fileListHeader" class="file-list-header">
+                <div class="file-row title">
+                  <div class="file-name title"> File Name </div>
+                  <div class="file-date title"> Action </div>
+                  <div class="file-size title"> Status </div>
+                  <div class="file-date title"> Timestamp </div>
+                </div>
+              </div>
+            </div>
+            <div class="row center">
+              <div class="files-container col s12">
+                <div id="fileList" class="file-list-section">
+                </div>
+                <div id="noFileSection" class="no-file-section">
+                  No activity found.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="activity.js"></script>
+  </body>
+</html>

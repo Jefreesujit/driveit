@@ -1,3 +1,5 @@
+var selectedArray = [];
+
 function refreshList () {
   $('#overlaySpinner').show();
   $('#fileList').html('');
@@ -12,6 +14,26 @@ function getBodyContent (data) {
     $('#fileListHeader').hide();
     $('#noFileSection').show();
   }
+}
+
+function showActionMenu() {
+
+}
+
+function bytesToSize (bytes) {
+  let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
+      i,
+      result;
+  if (bytes === 0) {
+    result = '0 Byte';
+  } else if (bytes === 1) {
+    result = '1 Byte';
+  } else {
+    i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)), 10);
+    i = i < sizes.length ? i : (sizes.length - 1);
+    result = +(bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+  }
+  return result;
 }
 
 function deleteFile (fileKey) {
@@ -45,15 +67,13 @@ function getFilesList () {
       }
       getBodyContent(response.Contents);
       response.Contents.map(function(file, index) {
+        var modifiedDate = new Date(file.LastModified).toDateString().substring(4),
+            encodeKey = encodeURI(file.Key);
         $('#fileList').append(
-          '<div class="file-row" id="fileId_'+index+'">'+
-            '<div class="file-name">'+file.Key+'</div>'+
-            '<div class="file-date">'+file.LastModified+'</div>'+
-            '<div class="file-size">'+file.Size+' Bytes </div>'+
-            '<div class="file-actions">'+
-              '<a class="download-btn" id="download-btn" href="/api/get-file/'+file.Key+'?Authorization='+authHeader+'">Download</button>'+
-              '<a class="delete-btn" id="delete-file-btn" onClick="deleteFile(\'' + file.Key + '\')">Delete</button>'+
-            '</div>'+
+          '<div class="file-row" onclick="selectFile(this)" id="fileId_'+index+'" data-key='+encodeKey+'>'+
+            '<div class="file-name data-key='+encodeKey+'">'+file.Key+'</div>'+
+            '<div class="file-date data-key='+encodeKey+'">'+ modifiedDate +'</div>'+
+            '<div class="file-size data-key='+encodeKey+'">'+ bytesToSize(file.Size) +'</div>'+
           '</div>'
         );
       });
@@ -64,6 +84,42 @@ function getFilesList () {
     }
   });
 }
+
+function selectFile(file) {
+  console.log(file);
+  var id = '#'+$(file).attr('id'),
+      key = $(file).data('key');
+
+  if($(id).hasClass('selected')) {
+    $(id).removeClass('selected');
+    selectedArray.splice(selectedArray.indexOf(key), 1);
+  } else {
+    $(id).addClass('selected');
+    selectedArray.push(key);
+  }
+}
+
+function openFile (id, key) {
+  console.log(id, key);
+  var authHeader = 'Bearer ' + localStorage.getItem("accessToken"),
+      iframeUrl = '/api/get-file/'+key+'?Authorization='+authHeader;
+
+  $('#fileViewer').attr('src', iframeUrl);
+  $('#fileViewOverlay').show();
+}
+
+// $('.file-row').on('click', function(event) {
+//   selectFile('#'+event.target.id, event.target.dataset.key);
+// });
+
+$('.file-row').on('dblclick', function(event) {
+  openFile('#'+event.target.id, event.target.dataset.key);
+});
+
+$('#closeFileView').on('click', function () {
+  $('#fileViewOverlay').hide();
+  // $('#fileViewer').attr('src', '');
+});
 
 $('#uploadBtn').on('click', function() {
   if ($('#uploadBtn').hasClass('active')) {
