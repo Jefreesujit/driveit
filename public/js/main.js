@@ -125,7 +125,7 @@ function openFile (file) {
       iframeUrl = 'https://docs.google.com/gview?url=https://driveit.us-west-2.elasticbeanstalk.com' + fileurl + '&embedded=true';
 
   $('#fileViewer').attr('src', iframeUrl);
-  $('#fileViewOverlay').show();
+  $('#fileViewOverlay').removeClass('hide');
 }
 
 $('#previewBtn').on('click', function(event) {
@@ -133,7 +133,7 @@ $('#previewBtn').on('click', function(event) {
 });
 
 $('#closeFileView').on('click', function () {
-  $('#fileViewOverlay').hide();
+  $('#fileViewOverlay').addClass('hide');
   $('#fileViewer').attr('src', '');
 });
 
@@ -172,7 +172,6 @@ $(document).ready(function() {
   var name = JSON.parse(localStorage.getItem("userData")).name;
   $('#overlaySpinner').show();
   $('#noFileSection').hide();
-  $('#fileViewOverlay').hide();
   $('#profileName').text(name);
   $('#profileIcon').html(name[0]);
   getFilesList();
