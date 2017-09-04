@@ -60,8 +60,8 @@ function getFilesList () {
       Authorization: authHeader
     },
     success: function(response) {
-      if (response.sessionToken) {
-        localStorage.setItem('accessToken', response.sessionToken);
+      if (response.accessToken) {
+        localStorage.setItem('accessToken', response.accessToken);
       }
       getBodyContent(response.Contents);
       response.Contents.map(function(file, index) {
