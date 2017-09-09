@@ -118,8 +118,7 @@ $('#deleteFileBtn').on('click', function(event) {
 })
 
 function openFile (file) {
-  var id = '#'+$(file).attr('id'),
-      key = $(file).data('key'),
+  var key = $(file).data('key'),
       authHeader = 'Bearer ' + localStorage.getItem("accessToken"),
       fileurl = '/api/get-file/'+key+'?Authorization='+authHeader,
       iframeUrl = 'https://docs.google.com/gview?url=https://driveit.us-west-2.elasticbeanstalk.com' + fileurl + '&embedded=true';
@@ -129,7 +128,7 @@ function openFile (file) {
 }
 
 $('#previewBtn').on('click', function(event) {
-  openFile(this);
+  openFile($(selectedId));
 });
 
 $('#closeFileView').on('click', function () {
