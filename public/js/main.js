@@ -169,7 +169,7 @@ $(document).on('dragleave', function(e) {
 });
 
 $(document).ready(function() {
-  var name = JSON.parse(localStorage.getItem("userData")).name;
+  var name = localStorage.getItem("username");
   $('#overlaySpinner').show();
   $('#noFileSection').hide();
   $('#profileName').text(name);
