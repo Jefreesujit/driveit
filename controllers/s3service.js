@@ -1,5 +1,6 @@
 var fs = require('fs');
 var AWS = require('aws-sdk');
+var dbServ = require('./dbService');
 
 AWS.config.update({
   region: "us-west-2"
@@ -19,6 +20,10 @@ function getFolderName (req) {
   return req.user.data.username.replace('@','-') + '/';
 }
 
+function getToken (req) {
+  return (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined;
+}
+
 function formatData (req, data) {
   var formattedData = {
     Contents: data.Contents.map(function(content) {
@@ -28,7 +33,7 @@ function formatData (req, data) {
         Key: content.Key.substring(getFolderName(req).length)
       }
     }),
-    accessToken: (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined
+    accessToken: getToken(req);
   }
 
   return formattedData;
@@ -44,7 +49,7 @@ exports.upload = function (req, res) {
       if (err) {
         res.status(500).send(err); // err on file upload
       } else {
-        addFileLogs({fileName: file.originalFilename, email: req.user.data.username, operation: 'ADD'});
+        dbServ.addFileLogs({fileName: file.originalFilename, email: req.user.data.username, operation: 'ADD'});
         res.status(200).send(true);
       }
     });
@@ -52,12 +57,16 @@ exports.upload = function (req, res) {
 };
 
 exports.listFiles = function (req, res) {
+  var token = getToken(req);
   s3.listObjects({
     Prefix: getFolderName(req)
   }, function(err, data) {
     if (err) {
       res.status(500).send(err); // err on file listing
     } else {
+      if (token) {
+        res.cookie('drive-it-access-token', token);
+      }
       res.status(200).send(formatData(req, data));
     }
   });
@@ -69,7 +78,7 @@ exports.getFile = function (req, res) {
     if (err) {
       res.status(500).send(err); // err on file download
     } else {
-      addFileLogs({fileName: req.params.fileKey, email: req.user.data.username, operation: 'DOWNLOAD'});
+      dbServ.addFileLogs({fileName: req.params.fileKey, email: req.user.data.username, operation: 'DOWNLOAD'});
       res.setHeader('Content-disposition', 'attachment; filename='+req.params.fileKey);
       res.send(new Buffer(data.Body)); // data.body => buffer stream
     }
@@ -82,40 +91,8 @@ exports.deleteFile = function (req, res) {
     if (err) {
       res.status(500).send(err); // err on file deletion
     } else {
-      addFileLogs({fileName: req.params.fileKey, email: req.user.data.username, operation: 'DELETE'});
+      dbServ.addFileLogs({fileName: req.params.fileKey, email: req.user.data.username, operation: 'DELETE'});
       res.status(200).send(data);
     }
   });
 };
-
-function addFileLogs (data) {
-  var record = {
-        fileName: data.fileName,
-        fileOperation: data.operation,
-        status: 'SUCCESS',
-        timestamp: new Date().toJSON()
-      },
-      params =  {
-        TableName: "Users",
-        Key:{
-          userid: data.email,
-          email: data.email
-        },
-        UpdateExpression: "set #fileLogs = list_append(#fileLogs, :record)",
-        ExpressionAttributeNames: {
-          '#fileLogs' : 'fileLogs'
-        },
-        ExpressionAttributeValues:{
-            ":record": [record]
-        },
-        ReturnValues:"UPDATED_NEW"
-      };
-
-  docClient.update(params, function (err, data) {
-    if (err) {
-      // console.log('file error', err);
-    } else {
-      // console.log('file success', data);
-    }
-  });
-}
