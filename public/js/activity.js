@@ -1,5 +1,5 @@
 function getBodyContent (data) {
-  if (data.length > 0) {
+  if (data.length) {
     $('#noFileSection').hide();
     $('#fileListHeader').show();
   } else {
@@ -18,20 +18,16 @@ function getFilesList () {
     },
     success: function(response) {
       if (response.sessionToken) {
-        localStorage.setItem('accessToken', response.sessionToken);
+        localStorage.setItem('accessToken', response.accessToken);
       }
-      getBodyContent(response.Contents);
-      response.Contents.map(function(file, index) {
-        var modifiedDate = new Date(file.LastModified).toDateString().substring(4);
+      getBodyContent(response.fileLogs);
+      response.fileLogs.map(function(file, index) {
         $('#fileList').append(
           '<div class="file-row" id="fileId_'+index+'" data-key='+file.Key+'>'+
-            '<div class="file-name">'+file.Key+'</div>'+
-            '<div class="file-date">'+ modifiedDate +'</div>'+
-            '<div class="file-size">'+ bytesToSize(file.Size) +'</div>'+
-            '<div class="file-actions">'+
-              '<a class="download-btn" id="download-btn" href="/api/get-file/'+file.Key+'?Authorization='+authHeader+'">Download</button>'+
-              '<a class="delete-btn" id="delete-file-btn" onClick="deleteFile(\'' + file.Key + '\')">Delete</button>'+
-            '</div>'+
+            '<div class="file-name">'+file.fileName+'</div>'+
+            '<div class="file-operation">'+ file.fileOperation +'</div>'+
+            '<div class="file-status">'+ file.status +'</div>'+
+            '<div class="file-timestamp">'+file.timestamp+'</div>'+
           '</div>'
         );
       });
@@ -42,3 +38,12 @@ function getFilesList () {
     }
   });
 }
+
+$(document).ready(function() {
+  var name = localStorage.getItem("username");
+  $('#overlaySpinner').show();
+  $('#noFileSection').hide();
+  $('#profileName').text(name);
+  $('#profileIcon').html(name[0]);
+  getFilesList();
+});

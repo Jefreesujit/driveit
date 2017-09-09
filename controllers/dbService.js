@@ -1,12 +1,36 @@
 var AWS = require('aws-sdk');
+
+AWS.config.update({
+  region: "us-west-2"
+});
+
 var docClient = new AWS.DynamoDB.DocumentClient();
 
-exports.getFileLogs = function (req, res) {
-
-}
-
 exports.getActivityLogs = function (req, res) {
+  var params =  {
+    TableName: "Users",
+    ProjectionExpression: "fileLogs,activityLogs",
+    FilterExpression: "#email = :username",
+    ExpressionAttributeNames: {
+      "#email": "email",
+    },
+    ExpressionAttributeValues: {
+      ":username": req.user.data.username
+    }
+  };
 
+  docClient.scan(params, function (err, data) {
+    if (err) {
+      //console.log('log fetch error', err);
+      res.status(500).json(err);
+    } else {
+      res.status(200).json({
+        activityLogs: data.Items[0].activityLogs,
+        fileLogs: data.Items[0].fileLogs,
+        accessToken: (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined
+      });
+    }
+  });
 }
 
 exports.addFileLogs = function (data) {
@@ -65,7 +89,7 @@ exports.addUserEntry = function (data) {
 
 exports.addActivityLogs = function (data) {
   var record = {
-        activity: 'User Sign In',
+        activity: data.action,
         status: 'success',
         timestamp: new Date().toJSON()
       },

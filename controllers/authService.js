@@ -1,5 +1,6 @@
 var path = require('path');
 var AWS = require('aws-sdk');
+var dbServ = require('./dbService');
 var cognito = require('./aws_cognito.js');
 var jwt = require('jsonwebtoken');
 
@@ -54,10 +55,20 @@ exports.loginController = function (req,res) {
   });
 }
 
+exports.activityController = function (req,res) {
+  checkUserSession(req, function (successData) {
+    // cognito.getCognitoId(); commented out temporarily
+    res.sendFile(path.join(pathName, 'public', 'activity.html'));
+  }, function(err) {
+    res.redirect('/login');
+  });
+};
+
 exports.logoutController = function (req, res) {
   var emailId = getEmailFromCookie(req),
       signOut = cognito.signOutUser(emailId);
-  signOut.then(function(data) {    
+  signOut.then(function(data) { 
+    dbServ.addActivityLogs({email: emailId, action: 'User Sign Out'});   
     res.clearCookie('drive-it-access-token');
     res.redirect('/login');
   }, function(err) {
@@ -69,10 +80,14 @@ exports.userSignIn =  function (req, res) {
   var authData = getAuthInfo(req),
       signIn = cognito.signInUser.apply(null, authData);
   signIn.then(function(data) {
-    addActivityLogs({email: authData[0]});
-    data.redirectUrl = '/';
+    dbServ.addActivityLogs({email: authData[0], action: 'User Sign In'});
+    var responseData = {
+      redirectUrl: '/',
+      sessionToken: data.sessionToken,
+      username: data.userData.name
+    };
     res.cookie('drive-it-access-token', data.sessionToken);
-    res.status(200).json(data);
+    res.status(200).json(responseData);
   }, function(err) {
     res.status(500).json(err);
   });
@@ -83,7 +98,7 @@ exports.userSignUp = function (req, res) {
       signUp = cognito.signUpUser.apply(null, authData);
   signUp.then(function(data) {
     data.message = 'A verification code has been sent to your email. Kindly use the code to complete the process.';
-    addUserEntry({email: authData[0], username: authData[1], password: authData[2]});
+    dbServ.addUserEntry({email: authData[0], username: authData[1], password: authData[2]});
     res.status(200).json(data);
   }, function(err) {
     res.status(500).json(err);
@@ -107,59 +122,6 @@ exports.forgotPassword = function (req, res) {
   //   console.log('===post signup data===', data);
   // });
   res.status(500).send('error resetting password');
-}
-
-function addUserEntry (data) {
-  var params =  {
-        TableName: "Users",
-        Item: {
-          userid: data.email,
-          name: data.username,
-          email: data.email,
-          password: data.password,
-          fileLogs: [],
-          activityLogs: []
-        }
-      };
-
-  docClient.put(params, function (err, data) {
-    if (err) {
-      // console.log('error', err);
-    } else {
-      // console.log('success', data);
-    }
-  });
-}
-
-function addActivityLogs (data) {
-  var record = {
-        activity: 'User Sign In',
-        status: 'success',
-        timestamp: new Date().toJSON()
-      },
-      params =  {
-        TableName: "Users",
-        Key:{
-          userid: data.email,
-          email: data.email
-        },
-        UpdateExpression: "set #activityLogs = list_append(#activityLogs, :record)",
-        ExpressionAttributeNames: {
-          '#activityLogs' : 'activityLogs'
-        },
-        ExpressionAttributeValues:{
-            ":record": [record]
-        },
-        ReturnValues:"UPDATED_NEW"
-      };
-
-  docClient.update(params, function (err, data) {
-    if (err) {
-      // console.log('activity error', err);
-    } else {
-      // console.log('activity success', data);
-    }
-  });
 }
 
 exports.checkUserSession = checkUserSession;
