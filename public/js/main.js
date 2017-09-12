@@ -18,6 +18,13 @@ function getBodyContent (data) {
   }
 }
 
+function isImage (file) {
+  var imgTypes = ['.jpeg', '.jpg', '.png', '.gif'],
+      extn = file.substring(file.lastIndexOf('.'));
+
+  return imgTypes.indexOf(extn) !== -1;
+}
+
 function bytesToSize (bytes) {
   let sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'],
       i,
@@ -120,10 +127,18 @@ $('#deleteFileBtn').on('click', function(event) {
 function openFile (file) {
   var key = $(file).data('key'),
       authHeader = 'Bearer ' + localStorage.getItem("accessToken"),
-      fileurl = '/api/get-file/'+key+'?Authorization='+authHeader,
-      iframeUrl = 'https://docs.google.com/gview?url=https://driveit.us-west-2.elasticbeanstalk.com' + fileurl + '&embedded=true';
+      fileurl = 'https://driveit.us-west-2.elasticbeanstalk.com/api/get-file/'+key+'?Authorization='+authHeader,
+      iframeUrl = 'https://docs.google.com/gview?url=' + fileurl + '&embedded=true';
 
-  $('#fileViewer').attr('src', iframeUrl);
+  if(isImage(key)) {
+    $('#fileViewer').hide();
+    $('#imgViewer').attr('src', fileurl);
+    $('#imgViewer').show(); 
+  } else {
+    $('#imgViewer').hide();
+    $('#fileViewer').attr('src', iframeUrl);
+    $('#fileViewer').show();
+  }
   $('#fileViewOverlay').removeClass('hide');
 }
 
@@ -134,6 +149,7 @@ $('#previewBtn').on('click', function(event) {
 $('#closeFileView').on('click', function () {
   $('#fileViewOverlay').addClass('hide');
   $('#fileViewer').attr('src', '');
+  $('#imgViewer').attr('src', '');
 });
 
 $('#uploadBtn').on('click', function() {
