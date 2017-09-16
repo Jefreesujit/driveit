@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="main.css" type="text/css" />
   </head>
   <body>
-    <div id="overlaySpinner" class="spinner-overlay">
+    <div id="overlaySpinner" class="spinner-overlay hide">
       <div class="loader page-spinner">
       </div>
     </div>
@@ -30,33 +30,17 @@
             </div>
             <div class="nav-section">
               <ul class="nav-list">
-                <li ><a href="/">My Drive</a></li>
-                <li class="selected"><a">My Activity</a></li>
-                <li href="/profile"><a>Profile</a></li>
+                <li><a href="/">My Drive</a></li>
+                <li><a href="/activity">My Activity</a></li>
+                <li class="selected"><a>Profile</a></li>
                 <li><a href="/logout">Logout</a></li>
               </ul>
             </div>
           </div>
           <div id="centerPane" class="center-pane">
-            <div class="top-pane" id="topPane">
-              <div class="action-ribbon">
-              </div>
-              <div id="fileListHeader" class="file-list-header">
-                <div class="file-row title">
-                  <div class="file-name title"> File Name </div>
-                  <div class="file-operation title"> Action </div>
-                  <div class="file-status title"> Status </div>
-                  <div class="file-timestamp title"> Timestamp </div>
-                </div>
-              </div>
-            </div>
             <div class="row center">
-              <div class="files-container col s12">
-                <div id="fileList" class="file-list-section">
-                </div>
-                <div id="noFileSection" class="no-file-section">
-                  No activity found.
-                </div>
+              <div id="userProfileIcon" class="user-profile-icon"></div>
+              <div id="profileInfo" class="profile-info">
               </div>
             </div>
           </div>
@@ -64,6 +48,6 @@
       </div>
     </main>
     <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="activity.js"></script>
+    <script type="text/javascript" src="profile.js"></script>
   </body>
 </html>

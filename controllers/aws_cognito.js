@@ -82,7 +82,7 @@ exports.signUpUser = function (email, name, password){
     }
     var dataGender = {
       Name : 'gender',
-      Value : 'male'
+      Value : null
     }
     // take each attribute object and turn it into a CognitoUserAttribute object
     var attributeEmail = new CognitoUserAttribute(dataEmail)
@@ -147,7 +147,7 @@ function authenticateUser(cognitoUser, authenticationDetails){
       onSuccess: function (result) {
               // save the jwtToken on localStorage for access elsewhere in app
         // localStorage.setItem('user_token', result.accessToken.jwtToken);
-        console.log("======== VIEW THE REFRESH TOKEN =========")
+        // console.log("======== VIEW THE REFRESH TOKEN =========")
         // console.log(localStorage.getItem('user_token'))
         console.log("======== VIEW THE AUTHENICATION RESULT =========")
         // console.log(result);
@@ -210,7 +210,7 @@ function authenticateUser(cognitoUser, authenticationDetails){
 
         var newPassword = 'P@ssW0rd',
           attributesData = {
-            gender: 'male',
+            gender: null,
             name: 'Auto Generated Name',
           };
         // Get these details and call 
@@ -223,8 +223,40 @@ function authenticateUser(cognitoUser, authenticationDetails){
   return p
 }
 
-// buildUserObject() gets the user attributes from Cognito and creates an object to represent our user
-// this will be used by the Redux state so that we can reference the user
+exports.getUserInfo = function (email) {
+  // use a promise to handle async
+  var p = new Promise((res, rej)=>{
+  // buildUserObject() gets the user attributes from Cognito and creates an object to represent our user
+  // this will be used by the Redux state so that we can reference the user
+    var userData = {
+      Username: email,
+      Pool: userPool
+    };
+
+    // create the `cognitoUser` object
+    var cognitoUser = new CognitoUser(userData);
+    cognitoUser.getSession(function(err, session) {
+            // if failed to get session, reject the promise
+      if (err) {
+        console.log('get user profile error', err)
+        rej(err)
+        return;
+      }
+
+      var decodedPayload = jwt.decode(session.getIdToken().getJwtToken(), {complete: true}).payload,
+          userInfo = {
+            email: decodedPayload.email,
+            gender: decodedPayload.gender,
+            name: decodedPayload.name,
+            verified: decodedPayload.email_verified 
+          };
+
+      res(userInfo);
+    });
+  });
+  return p;
+}
+
 function buildUserObject(cognitoUser){
  var p = new Promise((res, rej)=>{
    // call the cognito function `getUserAttributes()`

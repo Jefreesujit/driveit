@@ -1,5 +1,5 @@
 function getBodyContent (data) {
-  if (data.length) {
+  if (data && data.length) {
     $('#noFileSection').hide();
     $('#fileListHeader').show();
   } else {

@@ -33,7 +33,7 @@ function formatData (req, data) {
         Key: content.Key.substring(getFolderName(req).length)
       }
     }),
-    accessToken: getToken(req);
+    accessToken: getToken(req)
   }
 
   return formattedData;

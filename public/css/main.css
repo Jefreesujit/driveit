@@ -185,6 +185,7 @@ footer {
   width: 90%;
   margin: 0 5%;
   height: calc(100vh - 12%);
+  border-width: 0;
 }
 .img {
   max-width: calc(100%);
@@ -262,12 +263,52 @@ footer {
   text-align: center;
   text-transform: capitalize;
 }
+.user-profile-icon {
+  background: #26a69a;
+  color: white;
+  height: 200px;
+  width: 200px;
+  margin: 5% auto;
+  border-radius: 100px;
+  font-size: 120px;
+  padding: 16px;
+  text-align: center;
+  text-transform: capitalize;
+}
 .profile-name {
   text-align: center;
   font-size: 24px;
   color: darkslategray;
   letter-spacing: 0.5px;
   text-transform: capitalize;
+}
+.no-file-section {
+  font-size: 3.5rem;
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  color: lightgray;
+}
+.profile-info {
+  margin: 5%;
+}
+.user-profile {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  margin: 15px;
+  font-size: 24px;
+}
+.user-label {
+  text-align: left;
+  grid-column: 5/7;
+  color: #26a69a;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+.user-value {
+  text-align: left;
+  grid-column: 7/10;
 }
 
 /* ------------- Overrides ------------- */
@@ -298,14 +339,6 @@ footer {
 }
 .dropzone .dz-preview .dz-progress {
   border-radius: 0px !important; 
-}
-.no-file-section {
-  font-size: 3.5rem;
-  position: absolute;
-  top: 50%;
-  left: 60%;
-  transform: translate(-50%, -50%);
-  color: lightgray;
 }
 
 /* ------------ Spinner css ------------- */

@@ -15,8 +15,12 @@ var routes = function (app) {
     authCtrl.loginController(req,res);    
   });
 
-   app.get('/activity', function(req,res) {
+  app.get('/activity', function(req,res) {
     authCtrl.activityController(req,res);    
+  });
+
+  app.get('/profile', function(req,res) {
+    authCtrl.profileController(req,res);    
   });
 
   app.get('/logout', function(req,res) {
@@ -39,7 +43,10 @@ var routes = function (app) {
   app.post('/api/delete-file/:fileKey', s3Ctrl.deleteFile);
 
   // dynambo db log routes
-  app.get('/api/get-activity-logs', dbCtrl.getActivityLogs);  
+  app.get('/api/get-activity-logs', dbCtrl.getActivityLogs);
+
+  // profile info routes
+  app.get('/api/get-profile-info', authCtrl.getProfileInfo); 
 };
 
 module.exports = routes;

@@ -25,7 +25,6 @@ exports.getActivityLogs = function (req, res) {
       res.status(500).json(err);
     } else {
       res.status(200).json({
-        activityLogs: data.Items[0].activityLogs,
         fileLogs: data.Items[0].fileLogs,
         accessToken: (req.user && req.user.tokens) ? req.user.tokens.sessionToken : undefined
       });

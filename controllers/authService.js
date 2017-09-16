@@ -64,6 +64,15 @@ exports.activityController = function (req,res) {
   });
 };
 
+exports.profileController = function (req,res) {
+  checkUserSession(req, function (successData) {
+    // cognito.getCognitoId(); commented out temporarily
+    res.sendFile(path.join(pathName, 'public', 'profile.html'));
+  }, function(err) {
+    res.redirect('/login');
+  });
+};
+
 exports.logoutController = function (req, res) {
   var emailId = getEmailFromCookie(req),
       signOut = cognito.signOutUser(emailId);
@@ -110,6 +119,18 @@ exports.verifySignUp = function (req, res) {
       verify = cognito.verifyUserAccount.apply(null, authData);
   verify.then(function(data) {
       data.message = 'Registered successfully. Please login to continue.';
+      res.status(200).json(data);
+  }, function(err) {
+      res.status(500).json(err);
+  });
+}
+
+exports.getProfileInfo = function (req, res) {
+  var authData = getAuthInfo(req),
+      email = getEmailFromCookie(req),
+      profile = cognito.getUserInfo(email);
+
+  profile.then(function(data) {
       res.status(200).json(data);
   }, function(err) {
       res.status(500).json(err);
