@@ -1,3 +1,6 @@
+html {
+  user-select: none;
+}
 header {
 	padding-top: 10px;
   background: #26a69a;
@@ -61,6 +64,23 @@ footer {
 }
 .collection .collection-item.avatar {
 	min-height: 60px;
+}
+.notification {
+  position: absolute;
+  left: 50%;
+  top: 0px;
+  transform: translateX(-50%);
+  max-width: 50%;
+  min-width: 500px;
+  text-align: center;
+  padding: 10px;
+  background: #51b9af;
+  color: white;
+  box-shadow: 0px 2px 6px 0px rgba(0, 0, 0, 0.3);
+}
+.notification.show {
+  transition: top;
+  animation: notifyAnimation 5s;
 }
 .dropzone-overlay {
   top: 80px;
@@ -228,6 +248,15 @@ footer {
   background: rgba(0, 0, 0, 0.4);
   z-index: 500;
 }
+.spinner-text {
+  position: absolute;
+  top: 0%;
+  margin: 23.3% auto;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 19px;
+}
 .top-section {
   height: 200px;
 }
@@ -310,6 +339,26 @@ footer {
 .user-value {
   text-align: left;
   grid-column: 7/10;
+}
+
+/* ------------- Animations ------------ */
+
+@keyframes notifyAnimation {
+  0% {
+    top: 0px;
+  }
+
+  25% {
+    top: 84px;
+  }
+
+  75% {
+    top: 84px;
+  }
+
+  100% {
+    top: 0px;
+  }
 }
 
 /* ------------- Overrides ------------- */

@@ -1,11 +1,12 @@
 var selectedArray = [],
     selectedId;
 
-function refreshList () {
+function refreshList (message) {
   $('#overlaySpinner').show();
   $('#fileList').html('');
   $('#actionPane').addClass('hide');
-  getFilesList();
+  $('#notification').removeClass('show');
+  getFilesList(message);
 }
 
 function getBodyContent (data) {
@@ -50,7 +51,8 @@ function deleteFile (fileKey) {
       Authorization: 'Bearer ' + localStorage.getItem("accessToken")
     },
     success: function(response) {
-      refreshList();
+      var message = 'File deleted succesfully';
+      refreshList(message);
     },
     error: function(err) {
       $('#overlaySpinner').hide();
@@ -58,7 +60,7 @@ function deleteFile (fileKey) {
   });
 }
 
-function getFilesList () {
+function getFilesList (message) {
   var authHeader = 'Bearer ' + localStorage.getItem("accessToken");
   $.ajax({
     url:'/api/get-files-list',
@@ -83,9 +85,13 @@ function getFilesList () {
         );
       });
       $('#overlaySpinner').hide();
+      if (message) {
+        $('#notification').addClass('show').html(message);
+      }
     },
     error: function(err) {
       $('#overlaySpinner').hide();
+      $('#notification').removeClass('hide').html('Unable to fetch files, please try refreshing');
     }
   });
 }
@@ -195,13 +201,15 @@ $(document).ready(function() {
       Authorization: 'Bearer ' + localStorage.getItem("accessToken")
     },
     paramName: "file", // The name that will be used to transfer the file
-    maxFilesize: 25, // MB
-    complete: function(file, done) {
+    autoProcessQueue: true,
+    parallelUploads: 10,
+    queuecomplete: function(file, done) {
       $('.dz-messge').show();
       $('.dz-preview').hide('');
       $('#floatOver').addClass('hide-overlay');
       $('#uploadBtn').removeClass('active');
-      refreshList();
+      var message = 'File Uploaded Succesfully'
+      refreshList(message);
     },
     error: function(file, done) {
       $('.dz-preview').hide('');
