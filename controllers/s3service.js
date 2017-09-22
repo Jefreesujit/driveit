@@ -8,6 +8,7 @@ AWS.config.update({
 var docClient = new AWS.DynamoDB.DocumentClient();
 var bucketName = 'driveit.com';
 var s3 = new AWS.S3({
+  httpOptions: {timeout: 0},
   accessKeyId: 'AKIAJOL562VDTNEAJ4UQ',
   secretAccessKey: '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',
   signatureVersion: 'v4',
@@ -43,9 +44,9 @@ exports.upload = function (req, res) {
   var file = req.files.file;
   fs.readFile(file.path, function (err, data) {
     var filePath = getFolderName(req) + file.originalFilename;
-    var params = { Key: filePath, Body: data} ;
+    var params = { Key: filePath, Body: data};
     s3.upload(params, function(err, putData) {
-      fs.unlink(file.path);  // delete the temp file
+      // fs.unlink(file.path);  // delete the temp file
       if (err) {
         res.status(500).send(err); // err on file upload
       } else {
