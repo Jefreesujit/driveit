@@ -208,7 +208,7 @@ $(document).ready(function() {
       $('.dz-preview').hide('');
       $('#floatOver').addClass('hide-overlay');
       $('#uploadBtn').removeClass('active');
-      var message = 'File Uploaded Succesfully.<br> Larger files may take some time to reflect in the view, please be patient.'
+      var message = 'File(s) Uploaded Succesfully.'
       refreshList(message);
     },
     error: function(file, done) {
