@@ -33,3 +33,5 @@ attachRoutes(app);
 http.listen(process.env.PORT || 3000, function() {
   console.log("listening on port " + http.address().port);
 });
+http.timeout = 900000;
+
