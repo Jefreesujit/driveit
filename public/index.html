@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="main.css" type="text/css" />
   </head>
   <body>
+    <div id="sliderOverlay" class="slider-overlay"></div>
     <div id="overlaySpinner" class="spinner-overlay">
       <div class="loader page-spinner"></div>
       <div class="spinner-text">Drive It</div>
@@ -48,16 +49,17 @@
           <div id="centerPane" class="center-pane">
             <div class="top-pane" id="topPane">
               <div class="action-ribbon">
+                <div class="left-pane-btn primary-btn" id="leftPaneBtn">Menu</div>
                 <div id="actionPane" class="file-actions hide">
-                  <a class="download-btn" id="downloadBtn" href="">Download</a>
-                  <span class="download-btn" id="previewBtn">Preview</span>
+                  <a class="primary-btn" id="downloadBtn" href="">Download</a>
+                  <span class="primary-btn" id="previewBtn">Preview</span>
                   <span class="delete-btn" id="deleteFileBtn">Delete</span>
                 </div>
               </div>
               <div id="fileListHeader" class="file-list-header">
                 <div class="file-row title">
                   <div class="file-name title"> File Name </div>
-                  <div class="file-date title"> Date Modified </div>
+                  <div class="file-date title"> Modified On </div>
                   <div class="file-size title"> File Size </div>
                 </div>
               </div>

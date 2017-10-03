@@ -39,6 +39,16 @@ function getFilesList () {
   });
 }
 
+$('#leftPaneBtn').on('click', function() {
+  $('#leftPane').addClass('expanded');
+  $('#sliderOverlay').addClass('show');
+});
+
+$('#sliderOverlay').on('click', function() {
+  $('#leftPane').removeClass('expanded');
+  $('#sliderOverlay').removeClass('show');
+});
+
 $(document).ready(function() {
   var name = localStorage.getItem("username");
   $('#overlaySpinner').show();

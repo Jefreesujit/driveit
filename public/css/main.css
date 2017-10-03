@@ -52,11 +52,11 @@ footer {
   flex: 1;
   box-shadow: 0px 0px 10px 0px;
   z-index: 8;
-  min-width: 250px;
+  min-width: 200px;
 }
 .center-pane {
   flex: 4;
-  min-width: 700px;
+  min-width: 500px;
 }
 .top-pane {
   height: 100px;
@@ -159,7 +159,7 @@ footer {
 }
 .file-date, .file-actions, .file-size, .file-operation, .file-status {
   text-align: center;
-  margin: auto;
+  margin: 0 5px;
   flex: 1;
 }
 .action-ribbon {
@@ -171,7 +171,7 @@ footer {
   padding: 8px;
   margin-right: 5%; 
 }
-.file-actions .download-btn {
+.action-ribbon .primary-btn {
   background: #26a69a;
   color: white;
   border: none;
@@ -181,7 +181,7 @@ footer {
   display: inline-block;
   box-shadow: 0px 1px 10px -1px rgba(0, 0, 0, 0.68);
 }
-.file-actions .delete-btn {
+.action-ribbon .delete-btn {
   background: #f35353;
   color: white;
   border: none;
@@ -258,7 +258,7 @@ footer {
   font-size: 19px;
 }
 .top-section {
-  height: 200px;
+  height: 180px;
 }
 .nav-list li {
   line-height: 50px;
@@ -340,6 +340,9 @@ footer {
   text-align: left;
   grid-column: 7/10;
 }
+.action-ribbon .left-pane-btn {
+  display: none;
+}
 
 /* ------------- Animations ------------ */
 
@@ -359,6 +362,14 @@ footer {
   100% {
     top: 0px;
   }
+}
+
+::-webkit-scrollbar { 
+    display: none; 
+}
+
+input:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 1000px white inset !important;
 }
 
 /* ------------- Overrides ------------- */
@@ -462,10 +473,6 @@ footer {
 
 /* login.css */
 
-input:-webkit-autofill {
-    -webkit-box-shadow: 0 0 0 1000px white inset !important;
-}
-
 a {
   cursor: pointer;
 }
@@ -525,3 +532,85 @@ h5
 
 /* -------- mobile app --------- */
 
+
+@media screen and (max-width: 699px) {
+  header {
+    z-index: 410;
+  }
+  .center-pane {
+    min-width: 200px;
+  }
+  .message-box {
+    font-size: 1.25rem;
+    line-height: 2rem;
+    margin: 5% 3%;
+  }
+  .loader {
+    top: 30%;
+  }
+  .spinner-text {
+    display: none;
+  }
+  .file-date {
+    display: none;
+  }
+  .notification {
+    min-width: 300px;
+  }
+  .left-pane {
+    left: -255px;
+    position: absolute;
+    background: white;
+    height: calc(100vh - 84px);
+    transition: 0.5s;
+    z-index: 408;
+  }
+  .left-pane.expanded {
+    left: 0;
+    transition: 0.5s;
+  }
+  .file-actions {
+    margin-right: 0%; 
+  }
+  .action-ribbon .left-pane-btn {
+    display: inline-block;
+    position: absolute;
+    margin: 2.5%;
+  }
+  .slider-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 401;
+  }
+  .slider-overlay.show {
+    display: block;
+  }
+  .file-list-header .title {
+    border-right: none;
+  }
+  .file-timestamp {
+    display: none;
+  }
+  .dz-message {
+    font-size: 42px;
+  }
+  .user-profile-icon {
+    height: 150px;
+    width: 150px;
+    font-size: 90px;
+    padding: 12px;
+  }
+  .user-profile {
+    font-size: 18px;
+  }
+  .user-label {
+    grid-column: 3/6;
+  }
+  .user-value {
+    grid-column: 6/10;
+  }
+}

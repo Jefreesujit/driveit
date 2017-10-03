@@ -17,6 +17,10 @@ app.get('/fonts/roboto/*', function(req ,res){
   res.sendFile(path.join(__dirname, 'public/fonts/roboto/', fileName));
 });
 
+app.get('/favicon.ico', function(req ,res){
+  res.sendFile(path.join(__dirname, 'public/icons/favicon.ico'));
+});
+
 // attaching middlewares
 app.use(cookieParser());
 app.use([middleware.rawBodyParser, middleware.encodedBodyParser, middleware.jsonBodyParser]);

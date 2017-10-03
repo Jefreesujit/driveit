@@ -169,6 +169,16 @@ $('#uploadBtn').on('click', function() {
   }
 });
 
+$('#leftPaneBtn').on('click', function() {
+  $('#leftPane').addClass('expanded');
+  $('#sliderOverlay').addClass('show');
+});
+
+$('#sliderOverlay').on('click', function() {
+  $('#leftPane').removeClass('expanded');
+  $('#sliderOverlay').removeClass('show');
+});
+
 var dragTimer;
 $(document).on('dragover', function(e) {
   var dt = e.originalEvent.dataTransfer;
