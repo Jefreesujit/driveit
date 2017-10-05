@@ -144,6 +144,9 @@ footer {
   line-height: 30px;
   padding: 6px 15px;
 }
+.file-list-header .file-name {
+  margin-left: 5px;
+}
 .file-list-header .file-date, .file-list-header .file-size {
   text-align: center;
 }
@@ -176,8 +179,11 @@ footer {
   color: white;
   border: none;
   padding: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
   cursor: pointer;
-  margin-left: 10px;
+  margin-left: 15px;
   display: inline-block;
   box-shadow: 0px 1px 10px -1px rgba(0, 0, 0, 0.68);
 }
@@ -186,8 +192,11 @@ footer {
   color: white;
   border: none;
   padding: 8px;
+  height: 40px;
+  width: 40px;
+  border-radius: 20px;
   display: inline-block;
-  margin-left: 10px;
+  margin-left: 15px;
   cursor: pointer;
   box-shadow: 0px 1px 10px -1px rgba(0, 0, 0, 0.68);
 }
@@ -219,13 +228,16 @@ footer {
 }
 .close-fileview {
   float: right;
-  margin: 1% 3%;
+  margin: 1%;
   font-size: 24px;
   color: white;
   padding: 0px 10px;
   text-align: center;
   cursor: pointer;
   text-decoration: underline;
+}
+.close-fileview .close-icon {
+  font-size: 48px;
 }
 .hide-file {
   visibility: hidden;
@@ -296,14 +308,13 @@ footer {
 .user-profile-icon {
   background: #26a69a;
   color: white;
-  height: 200px;
-  width: 200px;
-  margin: 5% auto;
+  height: 150px;
+  width: 150px;
+  margin-top: 5%;
   border-radius: 100px;
   font-size: 120px;
   padding: 16px;
   text-align: center;
-  text-transform: capitalize;
 }
 .profile-name {
   text-align: center;
@@ -343,7 +354,16 @@ footer {
 .action-ribbon .left-pane-btn {
   display: none;
 }
-
+.file-row .file-icon {
+  margin-right: 5px;
+  font-size: 22px;
+  color: #26a69a;
+}
+.file-row.selected .file-icon {
+  margin-right: 5px;
+  font-size: 22px;
+  color: white;
+}
 /* ------------- Animations ------------ */
 
 @keyframes notifyAnimation {
@@ -357,6 +377,24 @@ footer {
 
   75% {
     top: 84px;
+  }
+
+  100% {
+    top: 0px;
+  }
+}
+
+@keyframes mobNotifyAnimation {
+  0% {
+    top: 0px;
+  }
+
+  25% {
+    top: 65px;
+  }
+
+  75% {
+    top: 65px;
   }
 
   100% {
@@ -391,7 +429,7 @@ input:-webkit-autofill {
 }
 .dz-message {
   color: white;
-  font-size: 72px;
+  font-size: 70px;
   width: 60%;
   margin: 10% auto !important;
 }
@@ -555,13 +593,16 @@ h5
     display: none;
   }
   .notification {
-    min-width: 300px;
+    min-width: 200px;
+  }
+  .notification.show {
+    animation: mobNotifyAnimation 5s;  
   }
   .left-pane {
     left: -255px;
     position: absolute;
     background: white;
-    height: calc(100vh - 84px);
+    height: calc(100vh - 64px);
     transition: 0.5s;
     z-index: 408;
   }
@@ -570,12 +611,12 @@ h5
     transition: 0.5s;
   }
   .file-actions {
-    margin-right: 0%; 
+    margin-right: 1%; 
   }
   .action-ribbon .left-pane-btn {
     display: inline-block;
     position: absolute;
-    margin: 2.5%;
+    margin: 2%;
   }
   .slider-overlay {
     display: none;
@@ -599,10 +640,11 @@ h5
     font-size: 42px;
   }
   .user-profile-icon {
-    height: 150px;
-    width: 150px;
-    font-size: 90px;
+    height: 100px;
+    width: 100px;
+    font-size: 72px;
     padding: 12px;
+    margin: 5%;
   }
   .user-profile {
     font-size: 18px;
@@ -612,5 +654,36 @@ h5
   }
   .user-value {
     grid-column: 6/10;
+  }
+  .float-upload-btn {
+    right: 25px;
+    bottom: 25px;
+  }
+  .close-fileview {
+    margin: 2% 0;
+  }
+  .close-fileview .close-icon {
+    font-size: 32px;
+    vertical-align: middle;
+  }
+  .action-ribbon .primary-btn {
+    margin-left: 10px;
+  }
+  .action-ribbon .delete-btn {
+    margin-left: 10px;
+  }
+  .page-header {
+    font-size: 32px;
+    line-height: 40px;
+  }
+  .page-container {
+    height: calc(100vh - 64px);
+  }
+  .file-list-section {
+    max-height: calc(100vh - 184px);
+  }
+  .dropzone-overlay, .dropzone.dz-clickable {
+    top: 64px;
+    height: calc(100% - 64px);
   }
 }

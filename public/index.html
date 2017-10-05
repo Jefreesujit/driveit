@@ -6,6 +6,8 @@
     <meta name="description" content="Drive In Cloud" />
     <meta name="viewport" content="width=device-width" />
     <link rel="stylesheet" href="materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
     <link rel="stylesheet" href="dropzone.min.css" type="text/css" />
     <link rel="stylesheet" href="basic.min.css" type="text/css" />
     <link rel="stylesheet" href="main.css" type="text/css" />
@@ -17,7 +19,7 @@
       <div class="spinner-text">Drive It</div>
     </div>
     <div id="fileViewOverlay" class="file-overlay hide">
-      <div class="close-fileview" id="closeFileView">Close</div>
+      <div class="close-fileview" id="closeFileView"><i class="material-icons close-icon">clear</i></div>
       <iframe id="fileViewer" class="doc" src=""></iframe>
       <img id="imgViewer" class="img" src="">
     </div>
@@ -49,11 +51,13 @@
           <div id="centerPane" class="center-pane">
             <div class="top-pane" id="topPane">
               <div class="action-ribbon">
-                <div class="left-pane-btn primary-btn" id="leftPaneBtn">Menu</div>
+                <div class="left-pane-btn primary-btn" id="leftPaneBtn">
+                  <i class="material-icons">menu</i>
+                </div>
                 <div id="actionPane" class="file-actions hide">
-                  <a class="primary-btn" id="downloadBtn" href="">Download</a>
-                  <span class="primary-btn" id="previewBtn">Preview</span>
-                  <span class="delete-btn" id="deleteFileBtn">Delete</span>
+                  <a class="primary-btn" id="downloadBtn" href=""><i class="material-icons">cloud_download</i></a>
+                  <span class="primary-btn" id="previewBtn"><i class="material-icons">visibility</i></span>
+                  <span class="delete-btn" id="deleteFileBtn"><i class="material-icons">delete</i></span>
                 </div>
               </div>
               <div id="fileListHeader" class="file-list-header">
@@ -78,7 +82,7 @@
             <div class="row center">
               <form class="dropzone" method="post" id="fileDropzone" action="/api/file-upload">
                 <div class="dz-message">
-                <a>Click</a> here or <a>Drop</a> files here to upload
+                <a>Click</a> or <a>Drop</a> files here to upload
                 </div>
               </form>
             </div>

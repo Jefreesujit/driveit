@@ -8,7 +8,6 @@ function getProfileInfo () {
       Authorization: 'Bearer ' + localStorage.getItem("accessToken")
     },
     success: function(response) {
-      $('#userProfileIcon').html(response.name[0]);
       var keys = Object.keys(response);
       var content = keys.map(function(key) {
         return (

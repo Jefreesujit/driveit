@@ -78,7 +78,7 @@ function getFilesList (message) {
             encodeKey = encodeURI(file.Key);
         $('#fileList').append(
           '<div class="file-row" ondblclick="openFile(this)" onclick="selectFile(this)" id="fileId_'+index+'" data-key='+encodeKey+'>'+
-            '<div class="file-name data-key='+encodeKey+'">'+file.Key+'</div>'+
+            '<i class="material-icons file-icon">insert_drive_file</i><div class="file-name data-key='+encodeKey+'">'+file.Key+'</div>'+
             '<div class="file-date data-key='+encodeKey+'">'+ modifiedDate +'</div>'+
             '<div class="file-size data-key='+encodeKey+'">'+ bytesToSize(file.Size) +'</div>'+
           '</div>'
