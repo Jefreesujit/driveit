@@ -38,12 +38,21 @@ var getAuthInfo = function (req) {
   }
 }
 
+exports.welcomeController = function (req,res) {
+  checkUserSession(req, function (successData) {
+    // cognito.getCognitoId(); commented out temporarily
+    res.redirect('/');
+  }, function(err) {
+    res.sendFile(path.join(pathName, 'public', 'welcome.html'));
+  });
+};
+
 exports.homeController = function (req,res) {
   checkUserSession(req, function (successData) {
     // cognito.getCognitoId(); commented out temporarily
     res.sendFile(path.join(pathName, 'public', 'index.html'));
   }, function(err) {
-    res.redirect('/login');
+    res.redirect('/get-started');
   });
 };
 
@@ -60,7 +69,7 @@ exports.activityController = function (req,res) {
     // cognito.getCognitoId(); commented out temporarily
     res.sendFile(path.join(pathName, 'public', 'activity.html'));
   }, function(err) {
-    res.redirect('/login');
+    res.redirect('/get-started');
   });
 };
 
@@ -69,7 +78,7 @@ exports.profileController = function (req,res) {
     // cognito.getCognitoId(); commented out temporarily
     res.sendFile(path.join(pathName, 'public', 'profile.html'));
   }, function(err) {
-    res.redirect('/login');
+    res.redirect('/get-started');
   });
 };
 

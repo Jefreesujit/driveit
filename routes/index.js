@@ -5,10 +5,13 @@ var middleware = require('../middleware');
 // var router = require('express').Router();
 
 var routes = function (app) {
-
   // serve index file
   app.get('/', function(req,res) {
     authCtrl.homeController(req,res);
+  });
+
+  app.get('/get-started', function(req,res) {
+    authCtrl.welcomeController(req,res);
   });
 
   app.get('/login', function(req,res) {
