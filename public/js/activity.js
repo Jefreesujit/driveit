@@ -20,7 +20,6 @@ function getFilesList () {
       if (response.sessionToken) {
         localStorage.setItem('accessToken', response.accessToken);
       }
-      response.fileLogs = [];
       getBodyContent(response.fileLogs);
       response.fileLogs.map(function(file, index) {
         $('#fileList').append(
