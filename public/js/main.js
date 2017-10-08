@@ -200,6 +200,7 @@ $(document).on('dragleave', function(e) {
 });
 
 $(document).ready(function() {
+  window.scrollTo(0,1);
   var name = localStorage.getItem("username");
   $('#overlaySpinner').show();
   $('#noFileSection').hide();
