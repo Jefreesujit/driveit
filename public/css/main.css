@@ -756,6 +756,15 @@ h5
     top: 64px;
     height: calc(100% - 64px);
   }
+  .no-file-section {
+    font-size: 2.5rem;
+    position: absolute;
+    top: 30%;
+    left: 0;
+    margin: 10%;
+    color: lightgray;
+    transform: none;
+  }
   .welcome-page {
   background-image: url(/images/welcomemobile.png);
   }

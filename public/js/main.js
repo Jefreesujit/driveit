@@ -12,9 +12,9 @@ function refreshList (message) {
 function getBodyContent (data) {
   if (data.length > 0) {
     $('#noFileSection').hide();
-    $('#topPane').show();
+    $('#fileList').show();
   } else {
-    $('#topPane').hide();
+    $('#fileList').hide();
     $('#noFileSection').show();
   }
 }

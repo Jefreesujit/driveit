@@ -1,9 +1,9 @@
 function getBodyContent (data) {
   if (data && data.length) {
     $('#noFileSection').hide();
-    $('#fileListHeader').show();
+    $('#fileList').show();
   } else {
-    $('#fileListHeader').hide();
+    $('#fileList').hide();
     $('#noFileSection').show();
   }
 }
@@ -20,6 +20,7 @@ function getFilesList () {
       if (response.sessionToken) {
         localStorage.setItem('accessToken', response.accessToken);
       }
+      response.fileLogs = [];
       getBodyContent(response.fileLogs);
       response.fileLogs.map(function(file, index) {
         $('#fileList').append(
