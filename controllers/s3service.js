@@ -66,7 +66,7 @@ exports.listFiles = function (req, res) {
       res.status(500).send(err); // err on file listing
     } else {
       if (token) {
-        res.cookie('drive-it-access-token', token);
+        res.cookie('drive-it-access-token', token, { expires: new Date(Date.now() + 2628000000) }); // one month
       }
       res.status(200).send(formatData(req, data));
     }

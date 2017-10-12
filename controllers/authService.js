@@ -104,7 +104,7 @@ exports.userSignIn =  function (req, res) {
       sessionToken: data.sessionToken,
       username: data.userData.name
     };
-    res.cookie('drive-it-access-token', data.sessionToken);
+    res.cookie('drive-it-access-token', data.sessionToken, { expires: new Date(Date.now() + 2628000000) }); // one month
     res.status(200).json(responseData);
   }, function(err) {
     res.status(500).json(err);
