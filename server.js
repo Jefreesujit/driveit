@@ -1,4 +1,5 @@
 var express = require('express');
+var fs = require('fs');
 var app = express();
 var path = require('path');
 var http = require('http').Server(app);
@@ -32,6 +33,9 @@ app.use([middleware.rawBodyParser, middleware.encodedBodyParser, middleware.json
 app.use(multiparty);
 
 app.get('/.well-known/acme-challenge/:id', function(req,res) {
+  var createStream = fs.createWriteStream('.well-known/acme-challenge/' + req.params.id);
+  createStream.write(req.params.id+'.xx18WJKV6AEpSV65zT5WM6-FNqa-Mu-iqOzNLBf1Tk8');
+  createStream.end();
   res.sendFile(path.join(__dirname, '.well-known/acme-challenge', req.params.id));
 });
 
