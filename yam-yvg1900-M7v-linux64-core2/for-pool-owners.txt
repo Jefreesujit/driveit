@@ -1,0 +1,5 @@
+Information for pool owners
+
+If you want your pool to be added to default (sample) configuration files or change ranking of your pool, please contact @yvg1900 on Twitter.
+
+Please keep authors informed if you change/add some addresses/ports for your pools or implement new advanced features.

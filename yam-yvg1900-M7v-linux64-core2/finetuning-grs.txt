@@ -1,0 +1,74 @@
+Fine tuning yvg1900 GRS miner
+
+Most of performance optimizations are about tradeoffs… Imagine you have very fast CPU and very fast 
+memory reads, while memory writes give you big performance penalty. Then you would like to avoid 
+extra memory writes at cost of extra CPU loads by performing some extra comparisons in your code – 
+this may lead to better performance, but may not as well, this is all about tradeoffs.
+
+Some tradeoffs can be inferred from detectable hardware configuration – CPU model, available 
+instruction set, etc., but most are heavily dependent on particular system specifics – memory speed, OS 
+kernel configuration, virtualization, and many other parameters. Even more, some tradeoffs depend 
+completely on personal preference – do you plan to dedicate machine completely for mining tasks of 
+you plan to use it for something else, like browsing the Internet or listening music in background.
+
+Manually finding out the best setup is non-trivial task; it requires perfect discipline and care. So, I 
+decided to introduce built-in selection of algorithm variation that produces the best result in particular 
+case and specific usage scenario.
+
+1. Determining AES-NI support and number of threads
+
+Note that AES-NI instruction support is important for GRS mining. Hash function used by GRS as PoW benefits 
+a lot from presence of hardware-accelerated AES instructions. If AES-NI is not available but required by 
+chosen architecture, miner will crash.
+
+2. Activating fine tuning functionality
+
+Fine tuning is disabled by default.
+
+To enable fine tuning you shall add "av=0" parameter to GRS mining params when launching miner, for
+example, if you use config file:
+
+mining-params = grs:av=0
+
+When fine tuning is enabled, miner will perform tests for each available algorithm variation and 
+calculate appropriate scores.
+
+As soon as fine tuning measurement stage progresses, you will see the best score displayed at every 
+statistics display step. As soon as measurement stage finishes, miner will automatically select one with 
+best score and proceed with selected algorithm variation until terminated. You can see currently 
+selected variation as a value of "av" parameter.
+
+Note that fine tuning stage may take some time to complete. 
+
+Also note that finetuning requires stable connection to the pool to complete, so if connection gets
+terminated, finetuning procedure will be reset. In this case it may make sense to do tuning manually by
+trying different AVs and selecting one with lowest possible ART (Average Round Time).
+
+3. Enforcing miner to use specific algorithm variation
+
+As you may guess, miner operation is suboptimal during fine tune measurement stage. If you already 
+know your optimal algorithm variation, you may wish to bypass fine tuning measurement stage and 
+force miner to use specific algorithm variation. To do this simply specify desired algorithm variation as a 
+value of "av" parameter when launching miner.
+
+Good luck mining,
+yvg1900
+
+Consider donating to support further performance enhancements:
+PTS: PZxsEQoiMeB6tHcW2ZySBEiCPio1WkxbEL
+XPM: AW2388DEWNEfMH4rP9kcj9yKcMq1QywYT4
+DTC: D6PmUogMigWvXurgFTqm5VLxQeVpXdYQj3
+MMC: MVk7PuJCa9o6qTYeiQRJDd3uHxKXMrQuU6
+LTC: Lby4YjhcAxhmbsdHFb4nYydrwGoiJezZt1
+BTC: 1FxekeK5La7AuF3oxiLzPKnjXyLMrux6VT
+NMC: N9KXqmzEqP7gB2dGHpEZiRMgFjUHNM38FR 
+MAX: mTEsqg9dp3U9YXwduKxhhhDx1TRPBcNRvA
+NRS: 9qwyC34MCZ9XGopaNDNTnaMBtjAZhHvBd3
+GRS: FpHaQNJ2nMUc2kgBbzYue13E9VUfL8YbQp
+DMD: dEQZa7W7AczvUsjJkvWWrim1j8ZtgbAwXv
+DVK: D9o66V4h75JzWNpsaPidmKFVgwEf2DcDAX
+MYR: MFDpLPThL6D6vtWW42XobFNBpPdrJFPQb6
+XMR: 45w9aqVA6iVeMJ6jVHZPEyPqgVnBEAGhBBqGAW9ncXp44qbZy9vXkd2KpqYwcyVTQHF1kaSJm97GyceP3Y2dRMd7E9gyuZf
+BCN: 2AcGMZmmNWTiLvAg5n7ywMCAxXTxysYGsi1xzba2ok4UPccWTLqRyKN7EnQYUpEWpqBw1c9EVZrqo2CUG8f8mbjG5NA9njF
+QCN: 1V6wZP6aycYPbeafHxPcvaQfGs4M5kabHDQoTEsyCTT3HjccMyQbvEVNPoJuRc79XrPRYWESiAezyipWojpZ8bii3kczNgW
+FCN: 6rNjXkY5YQzWiTMmDUbL5gYTWx9UTdUMSA98S1G3cTmhZN9Xp6kq4woGeoK5Q8B3fPZV6TFKs36zdHpZnYxA4BFK3fLpJzW

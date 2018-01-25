@@ -1,0 +1,62 @@
+Q: What all these hugepages about?
+
+A: This is all about efficient memory access, which is very important for mining performance.
+
+Here is a nice explanation:
+https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Performance_Tuning_Guide/s-memory-transhuge.html
+
+----------------
+
+Q: Are hugepages somehow different from Windows Large-Page Support?
+
+A: No, this is exactly same thing.
+
+----------------
+
+Q: I am getting the following error:
+
+Error: Can not enable [SeLockMemoryPrivilege] privilege, error=1300
+Warning: Huge Pages not available, performance may degrade
+
+How can I fix that?
+
+A: From StackOverflow http://stackoverflow.com/questions/39059/how-do-i-run-my-app-with-large-pages-in-windows
+
+You will have to assign the "Lock pages in memory" privilege to any user that runs your application. This includes administrators
+
+Select Control Panel -> Administrative Tools -> Local Security Policy
+Select Local Policies -> User Rights Assignment
+Double click "Lock pages in memory", add users and/or groups
+Reboot the machine
+
+On Windows Vista you need also make sure that the application is run as Administrator (by right-clicking on the application or the shell and choosing "Run as adminstrator").
+
+In addition, it helps to have a freshly booted machine since the large pages can "run out" due to fragmentation of the heap.
+
+Alternatively, you can reach Local Security Policy by "start secpol.msc"
+
+----------------
+
+Q: I did all the above, and still getting the error=1300. What shall I do?
+
+A: Sometimes it is needed to add "Lock pages in memory" privilege to Administrators group, your user, and run cmd.exe as Administrator. Sometimes switching off UAC helps.
+
+----------------
+
+Q: I am getting the following error:
+
+Error: Can not allocate hugepages memory, error=1450
+
+How can I fix that?
+
+A: From MSDN
+
+ERROR_NO_SYSTEM_RESOURCES 
+1450 (0x5AA)
+Insufficient system resources exist to complete the requested service.
+
+Ensure you have enough RAM. 8Gb of physical RAM is very strict minimum required to activate hugepages memory.
+Reboot and try again. Sometimes memory fragmentation prevents from allocating enough hugepages memory.
+Select smaller memory size, select less threads. If you are under virtualized environemnt, ensure both host and VM support hugepages.
+Try with one thread and 512M RAM per thread.
+

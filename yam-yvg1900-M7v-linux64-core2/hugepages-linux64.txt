@@ -1,0 +1,16 @@
+Q: What all these hugepages about?
+
+A: This is all about efficient memory access, which is very important for mining performance.
+
+Here is a nice explanation:
+https://access.redhat.com/site/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Performance_Tuning_Guide/s-memory-transhuge.html
+
+----------------
+
+Q: How I can check that hugepages are in use?
+
+A: Linux version of miner relies on Transparent Huge Pages kernel support.
+
+Check "AnonHugePages" value found in /proc/meminfo
+
+cat /proc/meminfo | grep AnonHugePages

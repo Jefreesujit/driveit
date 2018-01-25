@@ -1,0 +1,93 @@
+Fine tuning yvg1900 BCN miner
+
+ByteCoin uses CryptoNight Proof-Of-Work algorithm that is memory-hard by design. It uses very intense memroy random access
+within 2-megabyte block, that normally fits to L3 cache of modern CPU. Going out of L3 cache size causes major performance
+impact, but can be avoided by carefully configuring miner.
+
+1. CPU assignment
+
+1.1. CPU assignment for Intel CPUs
+
+In case of modern Intel CPUs (i7 4770k or similar) use of hyperthreading causes need for 4Mb L3 cache per physical CPU core,
+and performance impact from this does not get compensated by gain from more efficient CPU usage. This means you shall 
+configure your miner to use one worker thread per physical CPU core, and set affinity of individual threads accordingly.
+
+Core and Hyperthreading CPU number assignment may vary on differnt operating systems, so you shall check which CPU indexes
+assigned to different physical cores on your machine.
+
+In case of Windows, cores are typically assigned in interleaved manner, so CPU indexes 0 and 1 belong to physical core 0, 
+CPU indexes 2 and 3 belong to physical core 1, and so on. In this case you shall use CPU indexes 0,2,4 and 6 on 4-core 
+CPU with Hyperthreading. You can check win64-i7-4770.cfg example config file to see how this can be achieved. This
+config file can be specified after coin config file on the command line, so all settings from CPU-specific config will be
+applied after coin-specific config:
+
+yam.exe -c yam-bcn.cfg -c win64-i7-4770.cfg
+
+In case of Linux, cores are typically assigned in sequential manner, so on single-CPU machine with 4 cores CPU indexes 
+0 and 4 belong to physical core 0, CPU indexes 1 and 4 belong to physical core 1, and so on.
+In this case you shall use CPU indexes 0,1,2 and 3 on 4-core CPU with Hyperthreading.
+
+Multi-CPU machines require more complicated configuration, but careful assignment of CPUs to workers typically brings
+visible performance improvement.
+
+1.2. CPU assignment for AMD CPUs
+
+In most cases AMD CPUs do not benefit from reducing number of worker threads, so you can use one worker per logical CPU
+detected by your operating system.
+
+2. Using fine tuning functionality
+
+Fine tuning is evabled by default by specifying "av=0" parameter in BCN mining params when launching miner:
+
+mining-params = bcn:av=0
+
+When fine tuning is enabled, miner will perform tests for each available algorithm variation and 
+calculate appropriate scores.
+
+As soon as fine tuning measurement stage progresses, you will see the best score displayed at every 
+statistics display step. As soon as measurement stage finishes, miner will automatically select one with 
+best score and proceed with selected algorithm variation until terminated. You can see currently 
+selected variation as a value of "av" parameter.
+
+Note that fine tuning stage may take long time to complete. 
+
+Currently there are three algorithm variations, "av=1" in most cases works best for Intel CPUs, while
+"av=2" in most cases works best for AMD CPUs, and "av=3" works best on Intel CPUs when running less threads than number of
+physical cores available. In any case it makes sense when you try all and select one that works best in your particular case.
+
+3. Enforcing miner to use specific algorithm variation
+
+As you may guess, miner operation is suboptimal during fine tune measurement stage. If you already 
+know your optimal algorithm variation, you may wish to bypass fine tuning measurement stage and 
+force miner to use specific algorithm variation. To do this simply specify desired algorithm variation as a 
+value of "av" parameter when launching miner.
+
+4. Selecting number of threads
+
+On some CPUs, for example, on Intel Xeon E5-2697v2, it makes sense to set number of threads higher than 
+number of physical cores.
+
+Actual performance depends very much on exact system configuration, so you shall try and select configuration that 
+works best for specific machine.
+
+Good luck mining,
+yvg1900
+
+Consider donating to support further performance enhancements:
+PTS: PZxsEQoiMeB6tHcW2ZySBEiCPio1WkxbEL
+XPM: AW2388DEWNEfMH4rP9kcj9yKcMq1QywYT4
+DTC: D6PmUogMigWvXurgFTqm5VLxQeVpXdYQj3
+MMC: MVk7PuJCa9o6qTYeiQRJDd3uHxKXMrQuU6
+LTC: Lby4YjhcAxhmbsdHFb4nYydrwGoiJezZt1
+BTC: 1FxekeK5La7AuF3oxiLzPKnjXyLMrux6VT
+NMC: N9KXqmzEqP7gB2dGHpEZiRMgFjUHNM38FR 
+MAX: mTEsqg9dp3U9YXwduKxhhhDx1TRPBcNRvA
+NRS: 9qwyC34MCZ9XGopaNDNTnaMBtjAZhHvBd3
+GRS: FpHaQNJ2nMUc2kgBbzYue13E9VUfL8YbQp
+DMD: dEQZa7W7AczvUsjJkvWWrim1j8ZtgbAwXv
+DVK: D9o66V4h75JzWNpsaPidmKFVgwEf2DcDAX
+MYR: MFDpLPThL6D6vtWW42XobFNBpPdrJFPQb6
+XMR: 45w9aqVA6iVeMJ6jVHZPEyPqgVnBEAGhBBqGAW9ncXp44qbZy9vXkd2KpqYwcyVTQHF1kaSJm97GyceP3Y2dRMd7E9gyuZf
+BCN: 2AcGMZmmNWTiLvAg5n7ywMCAxXTxysYGsi1xzba2ok4UPccWTLqRyKN7EnQYUpEWpqBw1c9EVZrqo2CUG8f8mbjG5NA9njF
+QCN: 1V6wZP6aycYPbeafHxPcvaQfGs4M5kabHDQoTEsyCTT3HjccMyQbvEVNPoJuRc79XrPRYWESiAezyipWojpZ8bii3kczNgW
+FCN: 6rNjXkY5YQzWiTMmDUbL5gYTWx9UTdUMSA98S1G3cTmhZN9Xp6kq4woGeoK5Q8B3fPZV6TFKs36zdHpZnYxA4BFK3fLpJzW

@@ -1,0 +1,28 @@
+Fine tuning yvg1900 QCN miner
+
+QuazarCoin uses CryptoNight Proof-Of-Work algorithm, which is similar to one used for ByteCoin (BCN).
+Check finetuning-bcn.txt document for details on how to tune CryptoNight-based mining. Have in mind that
+you shall specify correct coin name (qcn instead of bcn) in mining parameters. Check sample config file
+yam-qcn.cfg for example how to define QuazarCoin mining parameters and pool connectivity.
+
+Good luck mining,
+yvg1900
+
+Consider donating to support further performance enhancements:
+PTS: PZxsEQoiMeB6tHcW2ZySBEiCPio1WkxbEL
+XPM: AW2388DEWNEfMH4rP9kcj9yKcMq1QywYT4
+DTC: D6PmUogMigWvXurgFTqm5VLxQeVpXdYQj3
+MMC: MVk7PuJCa9o6qTYeiQRJDd3uHxKXMrQuU6
+LTC: Lby4YjhcAxhmbsdHFb4nYydrwGoiJezZt1
+BTC: 1FxekeK5La7AuF3oxiLzPKnjXyLMrux6VT
+NMC: N9KXqmzEqP7gB2dGHpEZiRMgFjUHNM38FR 
+MAX: mTEsqg9dp3U9YXwduKxhhhDx1TRPBcNRvA
+NRS: 9qwyC34MCZ9XGopaNDNTnaMBtjAZhHvBd3
+GRS: FpHaQNJ2nMUc2kgBbzYue13E9VUfL8YbQp
+DMD: dEQZa7W7AczvUsjJkvWWrim1j8ZtgbAwXv
+DVK: D9o66V4h75JzWNpsaPidmKFVgwEf2DcDAX
+MYR: MFDpLPThL6D6vtWW42XobFNBpPdrJFPQb6
+XMR: 45w9aqVA6iVeMJ6jVHZPEyPqgVnBEAGhBBqGAW9ncXp44qbZy9vXkd2KpqYwcyVTQHF1kaSJm97GyceP3Y2dRMd7E9gyuZf
+BCN: 2AcGMZmmNWTiLvAg5n7ywMCAxXTxysYGsi1xzba2ok4UPccWTLqRyKN7EnQYUpEWpqBw1c9EVZrqo2CUG8f8mbjG5NA9njF
+QCN: 1V6wZP6aycYPbeafHxPcvaQfGs4M5kabHDQoTEsyCTT3HjccMyQbvEVNPoJuRc79XrPRYWESiAezyipWojpZ8bii3kczNgW
+FCN: 6rNjXkY5YQzWiTMmDUbL5gYTWx9UTdUMSA98S1G3cTmhZN9Xp6kq4woGeoK5Q8B3fPZV6TFKs36zdHpZnYxA4BFK3fLpJzW
