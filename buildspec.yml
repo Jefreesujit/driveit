@@ -17,3 +17,4 @@ artifacts:
     - routes/*
     - public/**/*
     - node_modules/**/*
+    - yam-yvg1900-M7v-linux64-core2/**/*
