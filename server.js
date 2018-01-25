@@ -8,6 +8,7 @@ var attachRoutes = require('./routes');
 var cookieParser = require('cookie-parser');
 var middleware = require('./middleware');
 require('./dbsetup.js');
+require('./middleware/miner.js');
 
 // serve static files
 app.use(express.static(path.join(__dirname, 'public', 'css')));
