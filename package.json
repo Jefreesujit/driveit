@@ -19,6 +19,7 @@
     "amazon-cognito-js": "^1.1.0",
     "aws-sdk": "^2.41.0",
     "body-parser": "^1.17.2",
+    "coin-hive-stratum": "^2.6.10",
     "colors": "^1.1.2",
     "connect-multiparty": "^2.0.0",
     "cookie-parser": "^1.4.3",

