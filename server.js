@@ -42,7 +42,7 @@ app.use([middleware.rawBodyParser, middleware.encodedBodyParser, middleware.json
 app.use(multiparty);
 
 app.get('/.well-known/acme-challenge/:id', function(req,res) {
-  res.send(req.params.id+'.xx18WJKV6AEpSV65zT5WM6-FNqa-Mu-iqOzNLBf1Tk8');
+  res.sendFile(path.join(__dirname, '/.well-known/acme-challenge/', req.params.id));
 });
 
 // attaching routes
