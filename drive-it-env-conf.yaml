@@ -1,0 +1,30 @@
+EnvironmentConfigurationMetadata:
+  DateCreated: '1499870411000'
+  DateModified: '1499870411000'
+Platform:
+  PlatformArn: arn:aws:elasticbeanstalk:us-west-2::platform/Node.js running on 64bit Amazon Linux/4.1.1
+OptionSettings:
+  AWSEBSecurityGroup.aws:ec2:vpc:
+    VPCId: vpc-65d88f02
+  aws:elasticbeanstalk:environment:
+    ServiceRole: aws-elasticbeanstalk-service-role
+  aws:ec2:vpc:
+    Subnets: subnet-7487982c,subnet-ca573aad,subnet-c597108c
+    ELBSubnets: subnet-7487982c,subnet-ca573aad,subnet-c597108c
+    AssociatePublicIpAddress: null
+  aws:elasticbeanstalk:healthreporting:system:
+    SystemType: enhanced
+  AWSEBLoadBalancer.aws:elb:loadbalancer:
+    SSLCertificateId: arn:aws:acm:us-west-2:382937512871:certificate/523c30b5-cf14-412a-9fcb-46a2eb9175f0
+  aws:autoscaling:launchconfiguration:
+    SecurityGroups: sg-c0966bbb
+    IamInstanceProfile: aws-elasticbeanstalk-ec2-role
+    InstanceType: t2.micro
+  AWSEBAutoScalingLaunchConfiguration.aws:autoscaling:launchconfiguration:
+    EC2KeyName: drive-it
+  aws:autoscaling:asg:
+    MaxSize: '2'
+EnvironmentTier:
+  Type: Standard
+  Name: WebServer
+AWSConfigurationTemplateVersion: 1.1.0.0
