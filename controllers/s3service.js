@@ -9,8 +9,6 @@ var docClient = new AWS.DynamoDB.DocumentClient();
 var bucketName = 'driveit.com';
 var s3 = new AWS.S3({
   httpOptions: {timeout: 0},
-  accessKeyId: 'AKIAJOL562VDTNEAJ4UQ',
-  secretAccessKey: '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',
   signatureVersion: 'v4',
   params: {
     Bucket: bucketName
