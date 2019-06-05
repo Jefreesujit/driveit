@@ -2,7 +2,7 @@ var express = require('express');
 var fs = require('fs');
 var app = express();
 var path = require('path');
-var http = require('http').Server(app);
+var https = require('https');
 var multiparty = require('connect-multiparty')();
 var attachRoutes = require('./routes');
 var cookieParser = require('cookie-parser');
@@ -39,9 +39,17 @@ app.get('/.well-known/acme-challenge/:id', function(req,res) {
 // attaching routes
 attachRoutes(app);
 
+var options = {
+  key: fs.readFileSync('key.pem'),
+  cert: fs.readFileSync('certificate.pem')
+};
+
+var server = https.createServer(options, app);
+
 // start server
-http.listen(process.env.PORT || 3000, function() {
-  console.log("listening on port " + http.address().port);
+server.listen(process.env.PORT || 8443, function() {
+  console.log("listening on port " + server.address().port);
 });
-http.timeout = 900000;
+
+server.timeout = 900000;
 
