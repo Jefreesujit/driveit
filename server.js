@@ -4,9 +4,10 @@ var app = express();
 var path = require('path');
 var https = require('https');
 var multiparty = require('connect-multiparty')();
-var attachRoutes = require('./routes');
 var cookieParser = require('cookie-parser');
 var middleware = require('./middleware');
+var attachRoutes = require('./routes');
+var attachCertHandler = require('./certHandler');
 require('./dbsetup.js');
 
 // serve static files
@@ -32,9 +33,8 @@ app.use(cookieParser());
 app.use([middleware.rawBodyParser, middleware.encodedBodyParser, middleware.jsonBodyParser]);
 app.use(multiparty);
 
-app.get('/.well-known/acme-challenge/:id', function(req,res) {
-  res.sendFile(path.join(__dirname, '/.well-known/acme-challenge/', req.params.id));
-});
+// attaching cert check handlers
+attachCertHandler(app);
 
 // attaching routes
 attachRoutes(app);
@@ -52,4 +52,3 @@ server.listen(process.env.PORT || 8443, function() {
 });
 
 server.timeout = 900000;
-

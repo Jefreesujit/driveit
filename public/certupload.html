@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Drive It</title>
+    <meta name="description" content="Drive It" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="dropzone.min.css" type="text/css" />
+    <link rel="stylesheet" href="basic.min.css" type="text/css" />
+    <link rel="stylesheet" href="main.css" type="text/css" />
+  </head>
+  <body>
+    <header id="header">
+      <div class="row">
+        <div class="page-header">
+          Drive It
+        </div>
+      </div>
+    </header>
+    <main id="body">
+      <div class="">
+        <div class="page-container">
+          <div id="centerPane" class="center-pane">
+            <div id="floatOver" class="dropzone-overlay">
+              <div class="row center">
+                <form class="dropzone" method="post" id="fileDropzone" action="/cert/upload">
+                  <div class="dz-message">
+                  <a>Click</a> or <a>Drop</a> files here to upload
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <script type="text/javascript" src="jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="dropzone.min.js"></script>
+    <script type="text/javascript" src="cert.js"></script>
+  </body>
+</html>

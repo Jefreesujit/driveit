@@ -8,13 +8,15 @@ phases:
 artifacts:
   files:
     - .ebextensions/*
-    - .well-known/**/*
+    - .cert-files/**/*
     - server.js
     - driveit-cloudformation.*
     - package.json
     - dbsetup.js
     - controllers/*
     - middleware/*
+    - certificate.pem
+    - key.pem
     - routes/*
     - public/**/*
     - node_modules/**/*
